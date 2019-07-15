@@ -47,6 +47,7 @@ my %module = (
         'Moo'                => 2,
         'Filter::signatures' => '0.09',
         'PerlIO::gzip'       => 0.2,
+        'Archive::Zip'       => 0,
         'XML::Twig'          => 0,
     },
     TEST_REQUIRES => {
