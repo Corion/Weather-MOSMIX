@@ -10,7 +10,6 @@ no warnings 'experimental::signatures';
 use Scalar::Util 'weaken';
 
 use Archive::Zip;
-#use Archive::Zip::MemberRead;
 use PerlIO::gzip;
 
 has 'twig' => (
@@ -49,7 +48,7 @@ sub parse_fh( $self, $fh ) {
 }
 
 sub handle_place( $self, $twig, $place ) {
-    my $description =             $place->first_child_text('kml:description');
+    my $description = $place->first_child_text('kml:description');
     if( $description =~ /\bfrankfurt\b/i ) {
         $place->flush;
         print
