@@ -46,7 +46,7 @@ my %module = (
     PREREQ_PM => {
         'Moo'                => 2,
         'Filter::signatures' => '0.09',
-        'IO::gzip'           => 0.2,
+        'PerlIO::gzip'       => 0.2,
         'XML::Twig'          => 0,
     },
     TEST_REQUIRES => {
