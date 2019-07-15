@@ -194,6 +194,8 @@ sub pod_section {
 }
 
 sub regen_EXAMPLES {
+    return unless -e "examples/gen_examples_pod.pl";
+
     my $perl = $^X;
     if ($perl =~/\s/) {
         $perl = qq{"$perl"};
