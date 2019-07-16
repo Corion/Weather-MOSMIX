@@ -163,7 +163,7 @@ sub parse_fh( $self, $fh ) {
 
 sub handle_place( $self, $twig, $place ) {
     my $description = $place->first_child_text('kml:description');
-    #if( $description =~ /\bfrankfurt\b/i ) {
+
 		my ($long,$lat,$el) = split /,/, $place->first_descendant('kml:coordinates')->text;
 
 		# filter for
@@ -189,11 +189,7 @@ sub handle_place( $self, $twig, $place ) {
 
         $place->purge;
 
-        #use Data::Dumper;
-        #print Dumper \%info;
-    #};
     $twig->purge;
-    #$place->flush;
 };
 
 package main;
