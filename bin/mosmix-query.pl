@@ -28,6 +28,15 @@ has 'twig' => (
     },
 );
 
+has 'expiry' => (
+    is => 'lazy',
+    default => POSIX::strftime( '%Y-%m-%d %H:%M:%S', gmtime ),
+);
+
+has 'writer' => (
+    is => 'ro',
+);
+
 # This could be in its own module?! IO::ReadZipContent ?
 sub read_zip( $self, $filename ) {
     my $reader = Archive::Zip->new( $filename );
@@ -63,6 +72,7 @@ sub handle_place( $self, $twig, $place ) {
 			elevation => $el,
 			forecasts => \@forecasts,
 		);
+		$self->writer->insert( $self->expiry, \%info );
 
         $place->purge;
 
@@ -70,6 +80,7 @@ sub handle_place( $self, $twig, $place ) {
         #print Dumper \%info;
     #};
     $twig->purge;
+    $self->writer->commit;
     #$place->flush;
 };
 
