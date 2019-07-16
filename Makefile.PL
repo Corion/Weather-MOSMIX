@@ -46,9 +46,17 @@ my %module = (
     PREREQ_PM => {
         'Moo'                => 2,
         'Filter::signatures' => '0.09',
+
+        # For reading the MOSMIX KML file
         'PerlIO::gzip'       => 0.2,
         'Archive::Zip'       => 0,
         'XML::Twig'          => 0,
+
+        # Later, we might want to spin this out
+        # For writing the stuff to a database
+        'DBI'                => 0,
+        'DBIx::RunSQL'       => 0,
+        'DBD::SQLite'        => 0,
     },
     TEST_REQUIRES => {
         'Test::More'   => 0,
