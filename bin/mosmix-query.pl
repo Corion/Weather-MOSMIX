@@ -1,4 +1,4 @@
-package MOSMIX::Reader;
+package Weather::MOSMIX::Reader;
 use strict;
 use Moo 2;
 use Archive::Zip;
@@ -76,5 +76,5 @@ sub handle_place( $self, $twig, $place ) {
 };
 
 package main;
-my $r = MOSMIX::Reader->new();
+my $r = Weather::MOSMIX::Reader->new();
 $r->read_zip( $ARGV[0] );
