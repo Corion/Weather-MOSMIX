@@ -44,7 +44,7 @@ sub parse_fh( $self, $fh ) {
 
 sub handle_place( $self, $twig, $place ) {
     my $description = $place->first_child_text('kml:description');
-    if( $description =~ /\bfrankfurt\b/i ) {
+    #if( $description =~ /\bfrankfurt\b/i ) {
 		my ($long,$lat,$el) = split /,/, $place->first_descendant('kml:coordinates')->text;
 
 		# filter for "ww",
@@ -70,7 +70,7 @@ sub handle_place( $self, $twig, $place ) {
 
         #use Data::Dumper;
         #print Dumper \%info;
-    };
+    #};
     $twig->purge;
     #$place->flush;
 };
