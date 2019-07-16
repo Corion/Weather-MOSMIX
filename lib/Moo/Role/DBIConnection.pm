@@ -34,8 +34,11 @@ Moo::Role::DBIConnection
 
 has 'dbh' => (
     is => 'lazy',
-    coerce => \&_connect_db,
     default => \&_connect_db,
+);
+
+has 'dsn' => (
+    is => 'ro',
 );
 
 has 'user' => (
@@ -51,8 +54,8 @@ has 'options' => (
 );
 
 sub _connect_db( $self ) {
-    $dbh = DBI->connect(
-        @{ $self }{qw( dsn user password options )}
+    my $dbh = DBI->connect(
+        $self->dsn, $self->user, $self->password, $self->options
     );
 }
 
