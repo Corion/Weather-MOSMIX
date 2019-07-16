@@ -20,7 +20,7 @@ create table forecast (
 
 -- here we will store the last requests, which we will use to extract
 -- and cache the forecasts around, instead of keeping all forecasts around
-create forecast_requests (
+create table forecast_requests (
       last_requested_at datetime not null
     , latitude double
     , longitude double
