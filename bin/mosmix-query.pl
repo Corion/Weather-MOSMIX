@@ -58,11 +58,9 @@ sub handle_place( $self, $twig, $place ) {
 		my %info = (
 		    name        => scalar $place->first_child_text('kml:name'),
 		    description => scalar  $place->first_child_text('kml:description'),
-		    coordinates => {
-				longitude => $long,
-				latitude  => $lat,
-				elevation => $el,
-			},
+			longitude => $long,
+			latitude  => $lat,
+			elevation => $el,
 			forecasts => \@forecasts,
 		);
 
