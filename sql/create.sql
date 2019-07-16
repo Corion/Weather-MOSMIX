@@ -2,7 +2,9 @@
 -- currently we need the JSON1 extension for SQLite (built-in with most SQLite libs since 3.9)
 -- Run as
 -- run-sql.pl sql/create.sql --dsn dbi:SQLite:dbname=db/forecast.sqlite
-create table forecast_locations (
+
+-- forecast_location -*> forecast
+create table forecast_location (
       name varchar(64) not null unique
 	, id integer unique not null primary key
 	-- the exact positions
@@ -20,7 +22,7 @@ create table forecast (
 
 -- here we will store the last requests, which we will use to extract
 -- and cache the forecasts around, instead of keeping all forecasts around
-create table forecast_requests (
+create table forecast_request (
       last_requested_at datetime not null
     , latitude double
     , longitude double
