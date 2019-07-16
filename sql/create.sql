@@ -30,6 +30,7 @@ create table forecast_request (
 );
 
 -- The rtree we will use to speed up finding the forecast closest to us
+-- later, when I get to actually understand/use it
 CREATE VIRTUAL TABLE forecast_index USING rtree(
    id,              -- Integer primary key
    minX, maxX,      -- Minimum and maximum X coordinate
