@@ -19,6 +19,8 @@ has 'twig' => (
         weaken $self;
         require XML::Twig;
         XML::Twig->new(
+            no_xxe => 1,
+            keep_spaces => 1,
             twig_handlers => {
                 'kml:Placemark' => sub { $self->handle_place( $_[0], $_[1] ) },
             },
