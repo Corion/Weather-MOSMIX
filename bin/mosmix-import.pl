@@ -158,6 +158,7 @@ sub read_zip( $self, $filename ) {
 
 sub parse_fh( $self, $fh ) {
     $self->twig->parse($fh)
+    $self->writer->commit;
 }
 
 sub handle_place( $self, $twig, $place ) {
@@ -192,7 +193,6 @@ sub handle_place( $self, $twig, $place ) {
         #print Dumper \%info;
     #};
     $twig->purge;
-    $self->writer->commit;
     #$place->flush;
 };
 
