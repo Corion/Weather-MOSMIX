@@ -14,7 +14,7 @@ create table forecast_location (
 );
 
 create table forecast (
-	  id integer unique not null primary key
+	  name varchar(64) not null
 	, expiry datetime not null
     , forecasts varchar(65536) -- we store the parsed forecasts as JSON instead of row(s) currently
     -- as I don't imagine that we'll every query for them instead of locations
