@@ -165,8 +165,11 @@ sub handle_place( $self, $twig, $place ) {
     #if( $description =~ /\bfrankfurt\b/i ) {
 		my ($long,$lat,$el) = split /,/, $place->first_descendant('kml:coordinates')->text;
 
-		# filter for "ww",
+		# filter for
+		#     "ww"  - significant weather
+		#     "TTT" - temperature 2m above ground
 		my @forecasts = (
+		    grep { $_->{type} =~ /^(ww|TTT)$/ }
 		    map {+{ type => $_->att('dwd:elementName'), values => $_->first_descendant('dwd:value')->text }}
 		    map {; $_->descendants('dwd:Forecast') } $place->descendants('kml:ExtendedData') );
 		for (@forecasts) {
