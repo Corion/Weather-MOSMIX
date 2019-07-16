@@ -28,20 +28,13 @@ has 'twig' => (
     },
 );
 
+# This could be in its own module?! IO::ReadZipContent ?
 sub read_zip( $self, $filename ) {
     my $reader = Archive::Zip->new( $filename );
     my @members = $reader->members;
     $members[0]->rewindData();
     my $stream = $members[0]->fh;
-    #read $stream, \my $buffer, 20;
-    #warn $buffer;
     binmode $stream => ':gzip(none)';
-    #my $l = 0;
-    #while( $l++ < 10) {
-    #    print <$stream>;
-    #
-    #};
-    #exit;
     $self->parse_fh($stream);
 }
 
