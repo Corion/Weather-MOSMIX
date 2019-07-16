@@ -10,6 +10,7 @@ create table forecast_location (
 	-- the exact positions
     , latitude double
     , longitude double
+    , elevation double
     , description varchar(128) not null
 );
 
