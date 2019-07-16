@@ -8,27 +8,7 @@ require POSIX;
 use JSON;
 
 # This should be MooX::Role::DBConnection
-has 'dsn' => (
-    is => 'ro',
-);
-
-has 'user' => (
-    is => 'ro',
-);
-has 'password' => (
-    is => 'ro',
-);
-has 'options' => (
-    is => 'lazy',
-    default => sub { {
-		#AutoCommit => 0,
-	} },
-);
-
-has 'dbh' => (
-    is => 'lazy',
-    default => \&_connect_db,
-);
+with 'Moo::Role::DBIConnection';
 
 has 'insert_location_sth' => (
     is => 'lazy',
@@ -46,19 +26,6 @@ has 'json' => (
 		JSON->new()
 	},
 );
-
-sub _connect_db( $self ) {
-	my $dbh = DBI->connect(
-	    $self->dsn,
-	    $self->user,
-	    $self->password,
-	    $self->options,
-	);
-	$dbh->do('PRAGMA synchronous = OFF');
-	$dbh->do('PRAGMA journal_mode = MEMORY');
-	$dbh->{AutoCommit} = 0;
-	$dbh
-}
 
 sub _prepare_location_sth( $self ) {
 	$self->dbh->prepare(<<'SQL');
@@ -86,6 +53,13 @@ sub purge_expired_records( $self, $date = POSIX::strftime('%Y-%m-%d %H:%M:%S', g
 	        where expiry <= ?
 SQL
 }
+
+sub start( $self ) {
+	my $dbh = $self->dbh;
+	$dbh->do('PRAGMA synchronous = OFF');
+	$dbh->do('PRAGMA journal_mode = MEMORY');
+	$dbh->{AutoCommit} = 0;
+};
 
 sub insert( $self, $expiry, @records ) {
 	my $i = 0;
@@ -157,7 +131,8 @@ sub read_zip( $self, $filename ) {
 }
 
 sub parse_fh( $self, $fh ) {
-    $self->twig->parse($fh)
+    $self->writer->start;
+    $self->twig->parse($fh);
     $self->writer->commit;
 }
 
