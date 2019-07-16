@@ -1,5 +1,7 @@
 -- SQL DDL for creating the weather database
 -- currently we need the JSON1 extension for SQLite (built-in with most SQLite libs since 3.9)
+-- Run as
+-- run-sql.pl sql/create.sql --dsn dbi:SQLite:dbname=db/forecast.sqlite
 create table forecast_locations (
       name varchar(64) not null unique
 	, id integer unique not null primary key
