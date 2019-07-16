@@ -194,5 +194,12 @@ sub handle_place( $self, $twig, $place ) {
 };
 
 package main;
-my $r = Weather::MOSMIX::Reader->new();
+use strict;
+my $w = Weather::MOSMIX::Writer->new(
+    dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
+);
+my $r = Weather::MOSMIX::Reader->new(
+    writer => $w,
+    expiry => '2019-06-23 22:08:00',
+);
 $r->read_zip( $ARGV[0] );
