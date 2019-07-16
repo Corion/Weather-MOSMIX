@@ -52,14 +52,31 @@ sub parse_fh( $self, $fh ) {
 sub handle_place( $self, $twig, $place ) {
     my $description = $place->first_child_text('kml:description');
     if( $description =~ /\bfrankfurt\b/i ) {
-        $place->flush;
-        print
-            join "\t",
-                $place->first_child_text('kml:name'),
-                $place->first_child_text('kml:description'),
-                $place->first_descendant('kml:coordinates')->text,
-                ;
-        print "\n";
+		my ($long,$lat,$el) = split /,/, $place->first_descendant('kml:coordinates')->text;
+
+		# filter for "ww",
+		my @forecasts = (
+		    map {+{ type => $_->att('dwd:elementName'), values => $_->first_descendant('dwd:value')->text }}
+		    map {; $_->descendants('dwd:Forecast') } $place->descendants('kml:ExtendedData') );
+		for (@forecasts) {
+			$_->{values} = [ map { $_ eq '-' ? undef : $_ } split /\s+/, $_->{values} ];
+		};
+
+		my %info = (
+		    name        => scalar $place->first_child_text('kml:name'),
+		    description => scalar  $place->first_child_text('kml:description'),
+		    coordinates => {
+				longitude => $long,
+				latitude  => $lat,
+				elevation => $el,
+			},
+			forecasts => \@forecasts,
+		);
+
+        $place->purge;
+
+        #use Data::Dumper;
+        #print Dumper \%info;
     };
     $twig->purge;
     #$place->flush;
