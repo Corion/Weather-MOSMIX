@@ -4,15 +4,11 @@
 [![Travis Build Status](https://travis-ci.org/Corion/Weather-MOSMIX.svg?branch=master)](https://travis-ci.org/Corion/Weather-MOSMIX)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/Corion/Weather-MOSMIX?branch=master&svg=true)](https://ci.appveyor.com/project/Corion/Weather-MOSMIX)
 
-CONTRIBUTING
-
-See lib/WWW/Mechanize/Chrome/Contributing.pod
-
-[Google Keep Extraction](https://github.com/Corion/WWW-Mechanize-Chrome/raw/master/demo/keep-export-demo.mp4)
-
 # NAME
 
 Reader for MOSMIX weather forecast files
+
+# SYNOPSIS
 
 # SEE ALSO
 
