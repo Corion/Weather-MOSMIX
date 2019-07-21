@@ -21,6 +21,7 @@ has 'ua' => (
     is => 'lazy',
     default => sub ($self) {
         HTTP::Tiny->new(
+            agent => "Weather::WeatherGov/$VERSION",
         )
     },
 );
