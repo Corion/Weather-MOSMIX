@@ -58,6 +58,11 @@ my %module = (
         'DBIx::RunSQL'       => 0,
         'DBD::SQLite'        => 0,
         'POSIX'              => 0,
+
+        # For Weather::WeatherGov
+        'URI'                => 0,
+        'HTTP::Tiny'         => 0,
+        'JSON'               => 0,
     },
     TEST_REQUIRES => {
         'Test::More'   => 0,

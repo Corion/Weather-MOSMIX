@@ -29,6 +29,7 @@ has 'json' => (
 sub forecast( $self, %options ) {
     my $cos_lat_sq = cos( $options{ latitude } ) ^ 2;
 
+    my $res =
     $self->dbh->selectall_arrayref(<<'SQL', { Slice => {}}, $options{latitude}, $options{latitude}, $options{longitude},$options{longitude}, $cos_lat_sq);
         select *,
               ((l.latitude - ?)*(l.latitude - ?))
@@ -38,8 +39,11 @@ sub forecast( $self, %options ) {
             order by distance asc, expiry desc
             limit 1
 SQL
+    for (@$res) {
+        $_->{forecasts} = $self->json->decode($_->{forecasts})
+    };
+    $res->[0]
 };
-
 
 =head1 SEE ALSO
 
