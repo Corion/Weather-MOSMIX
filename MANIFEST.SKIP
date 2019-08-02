@@ -24,3 +24,7 @@ Makefile$
 ^Weather-MOSMIX
 ^frame-\d+.png
 ^demo/
+^db/
+^.*\.kmz$
+^.*\.pdf$
+^.*\.URL$
