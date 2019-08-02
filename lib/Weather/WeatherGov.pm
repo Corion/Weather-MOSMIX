@@ -36,6 +36,7 @@ sub forecast( $self, %options ) {
         $options{latitude},
         $options{longitude};
     # We should cache this request for office and grid position
+    # maybe store these in the same SQLite database(schema) as Weather::MOSMIX?!
 
     # also, we need a cache and rate-limiter here so we can rate-limit
     # at least by IP address and maybe also globally how much we hit weather.gov
