@@ -25,7 +25,7 @@ for my $f (grep { length $_ } @{ $temp->{values} }) {
 
 my $weather = '-';
 
-$max -= 274.1;
-$min -= 274.1;
+$max -= 273.15;
+$min -= 273.15;
 
 print "$loc ($min/$max) $weather\n";
