@@ -8,6 +8,7 @@ use feature 'signatures';
 no warnings 'experimental::signatures';
 
 use Scalar::Util 'weaken';
+use Time::Piece;
 
 use Archive::Zip;
 use PerlIO::gzip;
@@ -23,6 +24,9 @@ has 'twig' => (
             no_xxe => 1,
             keep_spaces => 1,
             twig_handlers => {
+
+                # Set the expiry from the issue time
+                'dwd:IssueTime' => sub { $self->handle_expiry( $_[0], $_[1] ) },
                 'kml:Placemark' => sub { $self->handle_place( $_[0], $_[1] ) },
             },
         )
@@ -39,11 +43,11 @@ has 'writer' => (
 );
 
 sub file_expiry( $self, $filename ) {
-    $filename =~ m/MOSMIX_S_(20\d\d)(\d\d)(\d\d)(\d\d)_/
-        or die "Couldn't read file date/time from filename '$filename'";
-    my $d = $3 +1; # we'll hang onto the data for 24 hours
-    # XXX this should really be a calculation from timelocal instead...
-    "$1-$2-$d $4:00:00"
+    if( $filename =~ m/MOSMIX_S_(20\d\d)(\d\d)(\d\d)(\d\d)_/) {
+        my $d = $3 +1; # we'll hang onto the data for 24 hours
+        # XXX this should really be a calculation from timelocal instead...
+        "$1-$2-$d $4:00:00"
+    };
 }
 
 # This could be in its own module?! IO::ReadZipContent ?
@@ -62,6 +66,18 @@ sub parse_fh( $self, $fh, $expiry ) {
     $self->twig->parse($fh);
     $self->writer->commit;
 }
+
+sub handle_expiry( $self, $twig, $expiry ) {
+    my $exp = $expiry->text();
+    warn $exp;
+    $exp =~ s!\.000Z!!;
+    my $e = Time::Piece->strptime($exp,'%Y-%m-%dT%H:%M:%S.000Z');
+    $e += 24*60*60; # expire after 24 hours
+
+    $e = $e->strftime('%Y-%m-%dT%H:%M:%S.000Z');
+    warn "Expiry at $e";
+    $self->expiry($e);
+};
 
 sub handle_place( $self, $twig, $place ) {
     my $description = $place->first_child_text('kml:description');

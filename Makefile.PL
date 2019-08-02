@@ -58,6 +58,7 @@ my %module = (
         'DBIx::RunSQL'       => 0,
         'DBD::SQLite'        => 0,
         'POSIX'              => 0,
+        'Time::Piece'        => 0,
 
         # For Weather::WeatherGov
         'URI'                => 0,
