@@ -65,6 +65,10 @@ L<https://darksky.net/dev> - paid, international, signup required
 
 L<http://api.weather2020.com/> - international, signup required
 
+=head2 Icons
+
+L<https://github.com/zagortenay333/Tempestacons>
+
 =cut
 
 1;
