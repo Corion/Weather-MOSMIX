@@ -12,6 +12,20 @@ Reader for MOSMIX weather forecast files
 
 # SEE ALSO
 
+German Weather Service
+
 [https://opendata.dwd.de/weather/](https://opendata.dwd.de/weather/)
 
 [https://opendata.dwd.de/weather/local\_forecasts/mos/MOSMIX\_S/all\_stations/kml/](https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_S/all_stations/kml/)
+
+Other Weather APIs
+
+[https://openweathermap.org/api](https://openweathermap.org/api) - international, signup required
+
+[https://www.weatherbit.io/api](https://www.weatherbit.io/api) - international, signup required
+
+[https://developer.accuweather.com/](https://developer.accuweather.com/) - international, signup required
+
+[https://darksky.net/dev](https://darksky.net/dev) - paid, international, signup required
+
+[http://api.weather2020.com/](http://api.weather2020.com/) - international, signup required

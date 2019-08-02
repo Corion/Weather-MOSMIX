@@ -12,3 +12,6 @@ MYMETA.*
 frame-*.png
 *.pl
 db/
+*.kmz
+*.pdf
+*.URL
