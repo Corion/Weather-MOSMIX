@@ -1,10 +1,18 @@
+#!perl
 package main;
 use strict;
+use Weather::MOSMIX;
 use Data::Dumper;
 use Weather::MOSMIX;
 my $w = Weather::MOSMIX->new(
     dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
 );
+
+# Read location from .locationrc
+# File::HomeDir
+# ~/.config/.locationrc
+# ~/.locationrc
+
 my $f =
     $w->forecast(latitude => 50.11, longitude => 8.68 );
 # calculate min-temp, max-temp, primary weather for the period
