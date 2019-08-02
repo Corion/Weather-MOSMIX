@@ -60,7 +60,7 @@ sub read_zip( $self, $filename, $expiry=$self->file_expiry($filename) ) {
     $self->parse_fh($stream, $expiry);
 }
 
-sub parse_fh( $self, $fh, $expiry ) {
+sub parse_fh( $self, $fh, $expiry=undef ) {
     $self->writer->start;
     $self->expiry($expiry);
     $self->twig->parse($fh);
@@ -69,13 +69,11 @@ sub parse_fh( $self, $fh, $expiry ) {
 
 sub handle_expiry( $self, $twig, $expiry ) {
     my $exp = $expiry->text();
-    warn $exp;
     $exp =~ s!\.000Z!!;
     my $e = Time::Piece->strptime($exp,'%Y-%m-%dT%H:%M:%S.000Z');
     $e += 24*60*60; # expire after 24 hours
 
     $e = $e->strftime('%Y-%m-%dT%H:%M:%S.000Z');
-    warn "Expiry at $e";
     $self->expiry($e);
 };
 
