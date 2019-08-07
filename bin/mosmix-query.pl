@@ -43,6 +43,9 @@ my %weathercodes = (
     '49' => "\N{FOG}",
     '61' => "\N{CLOUD WITH RAIN}",
     '63' => "\N{CLOUD WITH RAIN}",
+    '80' => "\N{CLOUD WITH RAIN}", # light rain
+    '81' => "\N{RAIN}", # medium rain
+    '82' => "\N{RAIN}", # strong rain
 );
 
 my $weather = join '', map { my $v = sprintf '%02d', 0+$_; $weathercodes{$v} || $v } @{$weathercode->{values}};
