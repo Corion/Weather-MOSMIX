@@ -1,6 +1,7 @@
 package Weather::MOSMIX::Writer;
 use strict;
 use Moo 2;
+use Filter::signatures;
 use feature 'signatures';
 no warnings 'experimental::signatures';
 use DBI;
