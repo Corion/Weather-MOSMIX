@@ -34,7 +34,8 @@ for my $f (grep { length $_ } @{ $temp->{values} }) {
 };
 
 my %weathercodes = (
-    '01' => "\N{SUN}",
+    '00' => "\N{SUN}",
+    '01' => "\N{WHITE SUN WITH SMALL CLOUD}",
     '02' => "\N{WHITE SUN WITH SMALL CLOUD}",
     '03' => "\N{SUN BEHIND CLOUD}",
     '04' => "\N{CLOUD}",
