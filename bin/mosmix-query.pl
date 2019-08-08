@@ -55,4 +55,5 @@ $min -= 273.15;
 
 binmode STDOUT, ':encoding(UTF-8)';
 
-print "$loc (\x{1F321} $min/$max) $weather\n";
+#print $f->{expiry},"\n";
+print "$loc (\x{1F321}\x{fe0f} $min/$max) $weather\x{fe0f}\n";
