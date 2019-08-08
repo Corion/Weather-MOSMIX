@@ -3,7 +3,7 @@ package main;
 use strict;
 use Weather::MOSMIX;
 use Data::Dumper;
-use charNames ':full';
+use charnames ':full';
 use Weather::MOSMIX;
 my $w = Weather::MOSMIX->new(
     dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
