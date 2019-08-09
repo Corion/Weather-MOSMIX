@@ -51,7 +51,7 @@ if( $actions{ fetch }) {
     if( ! $res->{success}) {
         die $res->{message};
     };
-    status( "Fetched " . -s($name)  ." bytes to $name" );
+    status( join " ", "Fetched", -s($name), "bytes to $name" );
 
     push @files, $name;
 };
