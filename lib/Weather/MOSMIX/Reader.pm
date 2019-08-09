@@ -26,15 +26,19 @@ has 'twig' => (
             twig_handlers => {
 
                 # Set the expiry from the issue time
-                'dwd:IssueTime' => sub { $self->handle_expiry( $_[0], $_[1] ) },
+                'dwd:IssueTime' => sub { $self->handle_issuetime( $_[0], $_[1] ) },
                 'kml:Placemark' => sub { $self->handle_place( $_[0], $_[1] ) },
             },
         )
     },
 );
 
-# Ugly global variable to store state :-/
+# Ugly global attributes to store state while parsing:-/
 has 'expiry' => (
+    is => 'rw',
+);
+
+has 'issuetime' => (
     is => 'rw',
 );
 
@@ -67,10 +71,12 @@ sub parse_fh( $self, $fh, $expiry=undef ) {
     $self->writer->commit;
 }
 
-sub handle_expiry( $self, $twig, $expiry ) {
-    my $exp = $expiry->text();
+sub handle_issuetime( $self, $twig, $issuetime ) {
+    my $exp = $issuetime->text();
     $exp =~ s!\.000Z!!;
     my $e = Time::Piece->strptime($exp,'%Y-%m-%dT%H:%M:%S.000Z');
+    $self->issuetime($e->clone);
+
     $e += 24*60*60; # expire after 24 hours
 
     $e = $e->strftime('%Y-%m-%dT%H:%M:%S.000Z');
