@@ -25,9 +25,7 @@ sub status {
 
 my %actions;
 
-if( !@ARGV) {
-    $fetch = 1;
-} else {
+if( @ARGV) {
     $import = 1;
 };
 
@@ -38,7 +36,6 @@ if( ! ($import || $fetch )) {
 };
 $actions{ import } = $import;
 $actions{ fetch  } = $fetch;
-
 my @files = @ARGV;
 
 if( $actions{ fetch }) {
