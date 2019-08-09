@@ -33,6 +33,8 @@ for my $f (grep { length $_ } @{ $temp->{values} }) {
     };
 };
 
+our $as_emoji = "\x{fe0f}";
+
 my %weathercodes = (
     '00' => "\N{SUN}",
     '01' => "\N{WHITE SUN WITH SMALL CLOUD}",
@@ -48,7 +50,12 @@ my %weathercodes = (
     '82' => "\N{RAIN}", # strong rain
 );
 
-my $weather = join '', map { my $v = sprintf '%02d', 0+$_; $weathercodes{$v} || $v } @{$weathercode->{values}};
+my $weather = join '', map {
+    if( length $_ ) {
+        my $v = sprintf '%02d', 0+$_;
+        ($weathercodes{$v} || $v) . $as_emoji
+    }
+} @{$weathercode->{values}};
 
 $max -= 273.15;
 $min -= 273.15;
@@ -56,4 +63,4 @@ $min -= 273.15;
 binmode STDOUT, ':encoding(UTF-8)';
 
 #print $f->{expiry},"\n";
-print "$loc (\x{1F321}\x{fe0f} $min/$max) $weather\x{fe0f}\n";
+print "$loc (\x{1F321}$as_emoji $min/$max) $weather\n";
