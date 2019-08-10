@@ -34,7 +34,8 @@ for my $f (grep { length $_ } @{ $temp->{values} }) {
 };
 
 my %weathercodes = (
-    '01' => "\N{SUN}",
+    '00' => "\N{SUN}",
+    '01' => "\N{WHITE SUN WITH SMALL CLOUD}",
     '02' => "\N{WHITE SUN WITH SMALL CLOUD}",
     '03' => "\N{SUN BEHIND CLOUD}",
     '04' => "\N{CLOUD}",
@@ -42,6 +43,9 @@ my %weathercodes = (
     '49' => "\N{FOG}",
     '61' => "\N{CLOUD WITH RAIN}",
     '63' => "\N{CLOUD WITH RAIN}",
+    '80' => "\N{CLOUD WITH RAIN}", # light rain
+    '81' => "\N{RAIN}", # medium rain
+    '82' => "\N{RAIN}", # strong rain
 );
 
 my $weather = join '', map { my $v = sprintf '%02d', 0+$_; $weathercodes{$v} || $v } @{$weathercode->{values}};
@@ -51,4 +55,5 @@ $min -= 273.15;
 
 binmode STDOUT, ':encoding(UTF-8)';
 
-print "$loc (\x{1F321} $min/$max) $weather\n";
+#print $f->{expiry},"\n";
+print "$loc (\x{1F321}\x{fe0f} $min/$max) $weather\x{fe0f}\n";
