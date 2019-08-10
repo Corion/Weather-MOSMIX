@@ -31,7 +31,6 @@ if( !@ARGV) {
     $import = 1;
 };
 
-warn "$fetch / $import";
 if( ! ($import || $fetch )) {
     $fetch = 1;
     $import = 1;
