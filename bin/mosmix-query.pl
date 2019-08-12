@@ -36,24 +36,24 @@ for my $f (grep { length $_ } @{ $temp->{values} }) {
 our $as_emoji = "\x{fe0f}";
 
 my %weathercodes = (
-    '00' => "\N{SUN}",
-    '01' => "\N{WHITE SUN WITH SMALL CLOUD}",
-    '02' => "\N{WHITE SUN WITH SMALL CLOUD}",
-    '03' => "\N{SUN BEHIND CLOUD}",
-    '04' => "\N{CLOUD}",
-    '45' => "\N{FOG}",
-    '49' => "\N{FOG}",
-    '61' => "\N{CLOUD WITH RAIN}",
-    '63' => "\N{CLOUD WITH RAIN}",
-    '80' => "\N{CLOUD WITH RAIN}", # light rain
-    '81' => "\N{RAIN}", # medium rain
-    '82' => "\N{RAIN}", # strong rain
+    '00' => { emoji => "\N{SUN}",},
+    '01' => { emoji => "\N{WHITE SUN WITH SMALL CLOUD}",},
+    '02' => { emoji => "\N{WHITE SUN WITH SMALL CLOUD}",},
+    '03' => { emoji => "\N{SUN BEHIND CLOUD}",},
+    '04' => { emoji => "\N{CLOUD}", },
+    '45' => { emoji => "\N{FOG}", },
+    '49' => { emoji => "\N{FOG}", },
+    '61' => { emoji => "\N{CLOUD WITH RAIN}", },
+    '63' => { emoji => "\N{CLOUD WITH RAIN}", },
+    '80' => { emoji => "\N{CLOUD WITH RAIN}", }, # light rain
+    '81' => { emoji => "\N{RAIN}", }, # medium rain
+    '82' => { emoji => "\N{RAIN}", }, # strong rain
 );
 
 my $weather = join '', map {
     if( length $_ ) {
         my $v = sprintf '%02d', 0+$_;
-        ($weathercodes{$v} || $v) . $as_emoji
+        ($weathercodes{$v}->{emoji} || $v) . $as_emoji
     }
 } @{$weathercode->{values}};
 
