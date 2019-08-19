@@ -5,6 +5,8 @@ use Weather::MOSMIX;
 use Data::Dumper;
 use charnames ':full';
 use Weather::MOSMIX;
+use Weather::MOSMIX::Weathercodes 'mosmix_weathercode';
+
 my $w = Weather::MOSMIX->new(
     dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
 );
@@ -33,27 +35,10 @@ for my $f (grep { length $_ } @{ $temp->{values} }) {
     };
 };
 
-our $as_emoji = "\x{fe0f}";
-
-my %weathercodes = (
-    '00' => "\N{SUN}",
-    '01' => "\N{WHITE SUN WITH SMALL CLOUD}",
-    '02' => "\N{WHITE SUN WITH SMALL CLOUD}",
-    '03' => "\N{SUN BEHIND CLOUD}",
-    '04' => "\N{CLOUD}",
-    '45' => "\N{FOG}",
-    '49' => "\N{FOG}",
-    '61' => "\N{CLOUD WITH RAIN}",
-    '63' => "\N{CLOUD WITH RAIN}",
-    '80' => "\N{CLOUD WITH RAIN}", # light rain
-    '81' => "\N{RAIN}", # medium rain
-    '82' => "\N{RAIN}", # strong rain
-);
-
 my $weather = join '', map {
     if( length $_ ) {
         my $v = sprintf '%02d', 0+$_;
-        ($weathercodes{$v} || $v) . $as_emoji
+        mosmix_weathercode($v)
     }
 } @{$weathercode->{values}};
 
@@ -63,4 +48,4 @@ $min -= 273.15;
 binmode STDOUT, ':encoding(UTF-8)';
 
 #print $f->{expiry},"\n";
-print "$loc (\x{1F321}$as_emoji $min/$max) $weather\n";
+print "$loc (\x{1F321}$Weather::MOSMIX::Weathercodes::as_emoji $min/$max) $weather\n";
