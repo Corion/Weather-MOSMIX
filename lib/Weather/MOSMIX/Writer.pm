@@ -41,9 +41,9 @@ SQL
 sub _prepare_forecast_sth( $self ) {
 	$self->dbh->prepare(<<'SQL');
 	    insert into forecast (
-	        name, forecasts, expiry
+	        name, forecasts, expiry, issuetime
 	    ) values (
-	        ?,    ?,        ?
+	        ?,    ?,        ?,       ?
 	    )
 SQL
 }
@@ -74,7 +74,7 @@ sub insert( $self, $expiry, @records ) {
 		my $rec = $records[$i++];
 		return if ! $rec;
 		my $f = $self->json->encode( $rec->{forecasts} );
-		[$rec->{name}, $f, $expiry]
+		[$rec->{name}, $f, $expiry, $rec->{issuetime}]
 	});
 };
 
