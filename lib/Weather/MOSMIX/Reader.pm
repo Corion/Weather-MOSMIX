@@ -75,7 +75,7 @@ sub handle_issuetime( $self, $twig, $issuetime ) {
     my $exp = $issuetime->text();
     $exp =~ s!\.000Z!!;
     my $e = Time::Piece->strptime($exp,'%Y-%m-%dT%H:%M:%S.000Z');
-    $self->issuetime($e->clone);
+    $self->issuetime($e->strftime('%Y-%m-%dT%H:%M:%S.000Z'));
 
     $e += 24*60*60; # expire after 24 hours
 
@@ -106,6 +106,7 @@ sub handle_place( $self, $twig, $place ) {
 			latitude  => $lat,
 			elevation => $el,
 			forecasts => \@forecasts,
+            issuetime => $self->issuetime,
 		);
 		$self->writer->insert( $self->expiry, \%info );
 
