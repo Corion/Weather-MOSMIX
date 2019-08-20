@@ -34,9 +34,13 @@ our %weathercodes = (
             },
 );
 
-sub mosmix_weathercode($code, $type = 'emoji') {
-    my $c = $weathercodes{$code}->{ $type };
-    return $c ? $c . $as_emoji : $code;
+sub mosmix_weathercode($code, $type = undef) {
+    if( $type ) {
+        my $c = $weathercodes{$code}->{ $type };
+        return $c ? $c . $as_emoji : $code;
+    } else {
+        return $weathercodes{ $code }
+    }
 }
 
 1;
