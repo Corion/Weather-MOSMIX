@@ -20,6 +20,8 @@ Reader for MOSMIX weather forecast files
 # This should be MooX::Role::DBConnection
 with 'Moo::Role::DBIConnection';
 
+our $TIMESTAMP = '%Y-%m-%dT%H:%M:%S';
+
 has 'json' => (
     is => 'lazy',
     default => sub {

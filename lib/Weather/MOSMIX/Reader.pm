@@ -12,6 +12,7 @@ use Time::Piece;
 
 use Archive::Zip;
 use PerlIO::gzip;
+use Weather::MOSMIX;
 use Weather::MOSMIX::Writer;
 
 has 'twig' => (
@@ -74,12 +75,15 @@ sub parse_fh( $self, $fh, $expiry=undef ) {
 sub handle_issuetime( $self, $twig, $issuetime ) {
     my $exp = $issuetime->text();
     $exp =~ s!\.000Z!!;
-    my $issued = Time::Piece->strptime($exp,'%Y-%m-%dT%H:%M:%S.000Z');
+    my $issued = Time::Piece->strptime($exp,$Weather::MOSMIX::TIMESTAMP);
     $self->issuetime($issued);
 
-    my $e = Time::Piece->strptime($exp,'%Y-%m-%dT%H:%M:%S.000Z');
+    my $e = $issued->new();
+    $issued = $issued->strftime($Weather::MOSMIX::TIMESTAMP);
+    $self->issuetime($issued);
+
     $e += 24*60*60; # expire after 24 hours
-    $e = $e->strftime('%Y-%m-%dT%H:%M:%S.000Z');
+    $e = $e->strftime($Weather::MOSMIX::TIMESTAMP);
     $self->expiry($e);
 };
 
