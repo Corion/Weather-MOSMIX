@@ -29,3 +29,18 @@ Other Weather APIs
 [https://darksky.net/dev](https://darksky.net/dev) - paid, international, signup required
 
 [http://api.weather2020.com/](http://api.weather2020.com/) - international, signup required
+
+Overview of Open Data
+
+[https://index.okfn.org/place/de/weather/](https://index.okfn.org/place/de/weather/)
+[https://index.okfn.org/place/us/weather/](https://index.okfn.org/place/us/weather/)
+[https://index.okfn.org/place/lv/weather/](https://index.okfn.org/place/lv/weather/)
+[https://index.okfn.org/place/cy/weather/](https://index.okfn.org/place/cy/weather/)
+
+Cyprus forecast
+
+[http://www.moa.gov.cy/moa/ms/ms.nsf/DMLforecast\_general\_gr/DMLforecast\_general\_gr?opendocument](http://www.moa.gov.cy/moa/ms/ms.nsf/DMLforecast_general_gr/DMLforecast_general_gr?opendocument)
+
+## Icons
+
+[https://github.com/zagortenay333/Tempestacons](https://github.com/zagortenay333/Tempestacons)
