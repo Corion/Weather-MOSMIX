@@ -8,6 +8,8 @@ use DBI;
 require POSIX;
 use JSON;
 
+our $VERSION = '0.01';
+
 # This should be MooX::Role::DBConnection
 with 'Moo::Role::DBIConnection';
 

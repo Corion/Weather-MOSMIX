@@ -5,6 +5,8 @@ use feature 'signatures';
 no warnings 'experimental::signatures';
 use DBI;
 
+our $VERSION = '0.01';
+
 =head1 NAME
 
 Moo::Role::DBIConnection

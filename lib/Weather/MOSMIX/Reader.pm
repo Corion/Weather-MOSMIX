@@ -15,6 +15,8 @@ use PerlIO::gzip;
 use Weather::MOSMIX;
 use Weather::MOSMIX::Writer;
 
+our $VERSION = '0.01';
+
 has 'twig' => (
     is => 'lazy',
     default => sub {
