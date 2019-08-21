@@ -92,7 +92,7 @@ sub format_forecast {
             $offset += $count;
             $count = 0;
             if( defined $slot ) {
-                print "$slot ($today) -> $sequence{ $slot } ($time)\n";
+                #print "$slot ($today) -> $sequence{ $slot } ($time)\n";
                 $slot = $sequence{ $slot };
             };
             $today = $time->truncate( to => 'day' );
