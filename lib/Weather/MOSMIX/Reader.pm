@@ -52,7 +52,6 @@ has 'writer' => (
 sub file_expiry( $self, $filename ) {
     if( $filename =~ m/MOSMIX_S_(20\d\d)(\d\d)(\d\d)(\d\d)_/) {
         my $d = $3 +1; # we'll hang onto the data for 24 hours
-        # XXX this should really be a calculation from timelocal instead...
         "$1-$2-${d}T$4:00:00Z"
     };
 }
