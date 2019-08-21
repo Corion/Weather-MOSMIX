@@ -48,7 +48,7 @@ sub _prepare_forecast_sth( $self ) {
 SQL
 }
 
-sub purge_expired_records( $self, $date = POSIX::strftime('%Y-%m-%d %H:%M:%S', gmtime()) ) {
+sub purge_expired_records( $self, $date = POSIX::strftime('%Y-%m-%d %H:%M:%SZ', gmtime()) ) {
 	$self->dbh->do(<<'SQL', $date);
 	    delete from forecast
 	        where expiry <= ?

@@ -51,7 +51,7 @@ sub file_expiry( $self, $filename ) {
     if( $filename =~ m/MOSMIX_S_(20\d\d)(\d\d)(\d\d)(\d\d)_/) {
         my $d = $3 +1; # we'll hang onto the data for 24 hours
         # XXX this should really be a calculation from timelocal instead...
-        "$1-$2-$d $4:00:00"
+        "$1-$2-${d}T$4:00:00Z"
     };
 }
 
@@ -76,14 +76,14 @@ sub handle_issuetime( $self, $twig, $issuetime ) {
     my $exp = $issuetime->text();
     $exp =~ s!\.000Z!!;
     my $issued = Time::Piece->strptime($exp,$Weather::MOSMIX::TIMESTAMP);
-    $self->issuetime($issued);
+    $self->issuetime($issued.'Z');
 
     my $e = $issued->new();
     $issued = $issued->strftime($Weather::MOSMIX::TIMESTAMP);
-    $self->issuetime($issued);
+    $self->issuetime($issued.'Z');
 
     $e += 24*60*60; # expire after 24 hours
-    $e = $e->strftime($Weather::MOSMIX::TIMESTAMP);
+    $e = $e->strftime($Weather::MOSMIX::TIMESTAMP).'Z';
     $self->expiry($e);
 };
 

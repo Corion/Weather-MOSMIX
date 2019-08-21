@@ -38,9 +38,9 @@ open my $xml,'<', \<<XML;
 XML
 
 $r->parse_fh($xml);
-is $r->expiry, '2019-06-23T08:00:00.000Z', "We parse the expiry from the XML";
+is $r->expiry, '2019-06-23T08:00:00Z', "We parse the expiry from the XML";
 
 seek $xml, 0,0;
 
 $r->parse_fh($xml, 'foo');
-is $r->expiry, '2019-06-23T08:00:00.000Z', "We parse the expiry from the XML even if it's given elsewhere";
+is $r->expiry, '2019-06-23T08:00:00Z', "We parse the expiry from the XML even if it's given elsewhere";
