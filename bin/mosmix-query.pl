@@ -63,7 +63,7 @@ sub format_forecast {
     (my $temp) = grep{ $_->{type} eq 'TTT' } @{ $f->{forecasts}};
     (my $weathercode) = grep{ $_->{type} eq 'ww' } @{ $f->{forecasts}};
 
-    my $time = Time::Piece->strptime( $f->{issuetime}, '%Y-%m-%dT%H:%M:%S.000Z' );
+    my $time = Time::Piece->strptime( $f->{issuetime}, '%Y-%m-%dT%H:%M:%SZ' );
 
     # Find where today ends, and add a linebreak, resp. move to the next array ...
     my @forecasts;
