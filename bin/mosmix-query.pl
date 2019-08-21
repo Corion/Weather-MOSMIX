@@ -118,7 +118,7 @@ my $out = format_forecast( $f );
 binmode STDOUT, ':encoding(UTF-8)';
 
 for my $day ('today', 'tomorrow') {
-    print "$out->{location} (\x{1F321}$Weather::MOSMIX::Weathercodes::as_emoji $out->{weather}->{$day}->{min}/$out->{weather}->{$day}->{max})\n";
+    print "$day $out->{location} (\x{1F321}$Weather::MOSMIX::Weathercodes::as_emoji $out->{weather}->{$day}->{min}/$out->{weather}->{$day}->{max})\n";
     for my $w (@{ $out->{weather}->{$day}->{weather}}) {
         print sprintf "%02d %s$Weather::MOSMIX::Weathercodes::as_emoji %s\n", $w->{timestamp}->hour, $w->{description}->{emoji}, $w->{description}->{text};
     };
