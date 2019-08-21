@@ -1,0 +1,69 @@
+{
+   "abstract" : "unknown",
+   "author" : [
+      "Max Maischein <corion@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.34, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : 2
+   },
+   "name" : "Weather-MOSMIX",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "5.52_01"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Archive::Zip" : "0",
+            "DBD::SQLite" : "0",
+            "DBI" : "0",
+            "DBIx::RunSQL" : "0",
+            "Filter::signatures" : "0.09",
+            "HTTP::Tiny" : "0",
+            "JSON" : "0",
+            "Moo" : "2",
+            "POSIX" : "0",
+            "PerlIO::gzip" : "0.2",
+            "Time::Piece" : "0",
+            "URI" : "0",
+            "XML::Twig" : "0",
+            "perl" : "5.010"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Data::Dumper" : "0",
+            "Test::More" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/Corion/Weather-MOSMIX.git",
+         "web" : "https://github.com/Corion/Weather-MOSMIX"
+      }
+   },
+   "version" : "0.01",
+   "x_serialization_backend" : "JSON::PP version 2.97001",
+   "x_static_install" : 1
+}
