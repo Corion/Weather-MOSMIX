@@ -18,15 +18,19 @@ our %weathercodes = (
     '00' => { emoji => "\N{SUN}",                        svg => 'day.svg',
               text  => 'sunny' },
     '01' => { emoji => "\N{WHITE SUN WITH SMALL CLOUD}", svg => 'day-partly-cloudy.svg',
+              text  => 'mostly sunny', },
+    '02' => { emoji => "\N{WHITE SUN WITH SMALL CLOUD}", svg => 'day-partly-cloudy.svg',
               text  => 'partly cloudy', },
-    '02' => { emoji => "\N{WHITE SUN WITH SMALL CLOUD}", svg => 'day-partly-cloudy.svg' },
-    '03' => { emoji => "\N{SUN BEHIND CLOUD}",           svg => 'day-cloudy.svg' },
-    '04' => { emoji => "\N{CLOUD}",                      svg => 'day-cloudy.svg' },
+    '03' => { emoji => "\N{SUN BEHIND CLOUD}",           svg => 'day-cloudy.svg',
+              text  => 'mostly cloudy' },
+    '04' => { emoji => "\N{CLOUD}",                      svg => 'day-cloudy.svg',
+              text  => 'overcast'    },
     '45' => { emoji => "\N{FOG}",                        svg => 'fog.svg' },
     '49' => { emoji => "\N{FOG}",                        svg => 'fog.svg' },
     '61' => { emoji => "\N{CLOUD WITH RAIN}",            svg => 'rain.svg', text => 'slight rain, not freezing, continuous' },
     '63' => { emoji => "\N{CLOUD WITH RAIN}",            svg => 'rain.svg' },
-    '80' => { emoji => "\N{CLOUD WITH RAIN}",            svg => 'day-light-rain.svg' }, # light rain
+    '80' => { emoji => "\N{CLOUD WITH RAIN}",            svg => 'day-light-rain.svg',
+              text  => 'light rain'    }, # light rain
     '81' => { emoji => "\N{RAIN}",                       svg => 'day-rain.svg'       }, # medium rain
     '82' => { emoji => "\N{RAIN}",                       svg => 'day-showers.svg'    }, # strong rain
     '95' => { emoji => "\N{RAIN}",                       svg => 'thundershowers.svg',
@@ -39,6 +43,7 @@ sub mosmix_weathercode($code, $type = undef) {
         my $c = $weathercodes{$code}->{ $type };
         return $c ? $c . $as_emoji : $code;
     } else {
+        $weathercodes{ $code }->{ text } ||= "??? $code";
         return $weathercodes{ $code }
     }
 }
