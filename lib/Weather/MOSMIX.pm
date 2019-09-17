@@ -75,8 +75,12 @@ sub format_forecast_day {
     );
 
     my $time = $ts->new();
+    $time->tzoffset(2*3600); # at least until October ...
+    print $time->isdst, "\n";
     for my $i ($offset..$offset+$count-1) {
         my $c = $weathercode->{values}->[ $i ];
+    print $time,"\n";
+    print $time->tzoffset;
         if( length $c ) {
             my $v = sprintf '%02d', 0+$c;
             push @{ $weather }, {
@@ -96,7 +100,12 @@ sub format_forecast {
     (my $temp) = grep{ $_->{type} eq 'TTT' } @{ $f->{forecasts}};
     (my $weathercode) = grep{ $_->{type} eq 'ww' } @{ $f->{forecasts}};
 
-    my $time = Time::Piece->strptime( $f->{issuetime}, '%Y-%m-%dT%H:%M:%SZ' );
+    # This only works for a German localtime, but that happens to be where
+    # I use this, so it all works out. To coerce Time::Piece into always
+    # finding the TZ (or tzoffset) for GMT+1 / Europe/Berlin, you need to add
+    # fancy stuff here I guess, like playing with $ENV{TZ}
+    my $time = Time::Piece->strptime( $f->{issuetime}, '%Y-%m-%dT%H:%M:%SZ' )
+               ->localtime;
 
     # Find where today ends, and add a linebreak, resp. move to the next array ...
     my @forecasts;
