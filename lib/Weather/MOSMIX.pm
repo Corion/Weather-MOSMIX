@@ -76,11 +76,8 @@ sub format_forecast_day {
 
     my $time = $ts->new();
     $time->tzoffset(2*3600); # at least until October ...
-    print $time->isdst, "\n";
     for my $i ($offset..$offset+$count-1) {
         my $c = $weathercode->{values}->[ $i ];
-    print $time,"\n";
-    print $time->tzoffset;
         if( length $c ) {
             my $v = sprintf '%02d', 0+$c;
             push @{ $weather }, {
