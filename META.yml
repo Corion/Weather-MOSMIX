@@ -33,7 +33,7 @@ requires:
   Time::Piece: '0'
   URI: '0'
   XML::Twig: '0'
-  perl: '5.010'
+  perl: '5.022'
 resources:
   repository: git://github.com/Corion/Weather-MOSMIX.git
 version: '0.01'
