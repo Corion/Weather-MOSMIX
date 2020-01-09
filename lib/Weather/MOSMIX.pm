@@ -188,6 +188,12 @@ L<http://www.moa.gov.cy/moa/ms/ms.nsf/DMLforecast_general_gr/DMLforecast_general
 
 L<https://github.com/zagortenay333/Tempestacons>
 
+L<https://thenounproject.com/search/?q=weather>
+
+L<https://undraw.co/search>
+
+L<https://coreui.io/icons/>
+
 =cut
 
 1;
