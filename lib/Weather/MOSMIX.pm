@@ -50,6 +50,68 @@ SQL
 };
 
 
+sub format_forecast_range_concise {
+    my( $ts, $temp, $weathercode, $offset, $count ) = @_;
+
+    my ($min, $max) = (1000,0);
+    for my $f (grep { length $_ } @{ $temp->{values} }[$offset..$offset+$count-1]) {
+        if( $f < $min ) {
+            $min = $f;
+        };
+        if( $f > $max ) {
+            $max = $f;
+        };
+    };
+
+    $max -= 273.15;
+    $min -= 273.15;
+
+    my $weather = [];
+
+    my %forecast = (
+        date    => $ts->new(),
+        weather => $weather,
+        min     => $min,
+        max     => $max,
+    );
+
+    my $time = $ts->new();
+    $time->tzoffset(2*3600); # at least until October ...
+    # Do the min/max for the 4 6-hour windows
+    # Find the "representative" weather code for each window
+    my %count;
+    for my $i ($offset..$offset+$count-1) {
+        my $c = $weathercode->{values}->[ $i ];
+        if( length $c ) {
+            my $v = sprintf '%02d', 0+$c;
+            $count{ $v }++;
+            $time += 3600;
+        };
+    };
+
+    # Use the prevalent weather ...
+    my ($weathercode) = (sort { $count{$a} cmp $count{$a} } keys %count )[0];
+    push @{ $weather }, {
+        timestamp   => $ts->new(),
+        description => mosmix_weathercode($weathercode),
+    };
+
+    return \%forecast
+}
+
+sub format_forecast_day_concise {
+    my( $ts, $temp, $weathercode, $offset, $count ) = @_;
+
+    my @res;
+    for (1..4) {
+        push @res, format_forecast_range_concise( $ts, $temp, $weathercode, $offset, 6 );
+        $offset += 6;
+    };
+    # put all of the information into a single line:
+    # location / ts / 3-9        / 10-15     / 16-21     / 22-2
+    # location / ts / min/max/w / min/max/w / min/max/w / min/max/w
+};
+
 sub format_forecast_day {
     my( $self, $ts, $temp, $weathercode, $offset, $count ) = @_;
 

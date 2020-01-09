@@ -16,8 +16,9 @@ my $w = Weather::MOSMIX->new(
 # ~/.config/.locationrc
 # ~/.locationrc
 
-my $out =
-    $w->formatted_forecast(latitude => 50.11, longitude => 8.68 );
+my $f =
+    $w->forecast(latitude => 50.11, longitude => 8.68 );
+my $out = format_forecast( $f );
 
 binmode STDOUT, ':encoding(UTF-8)';
 
@@ -29,4 +30,7 @@ for my $day ('today', 'tomorrow') {
         print $w->{timestamp}, "\n";
         print sprintf "%02d %s$Weather::MOSMIX::Weathercodes::as_emoji %s\n", $w->{timestamp}->hour, $w->{description}->{emoji}, $w->{description}->{text};
     };
+    
+    # Maybe a one-line information per day, with samples/aggregates at
+    # 03, 09, 15 and 21 ?
 };
