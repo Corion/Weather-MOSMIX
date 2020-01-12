@@ -6,6 +6,7 @@ use feature 'signatures';
 no warnings 'experimental::signatures';
 use DBI;
 use JSON;
+use DBD::SQLite 1.56; # some virtual table bugfixes
 use Weather::MOSMIX::Weathercodes 'mosmix_weathercode';
 
 our $VERSION = '0.01';
