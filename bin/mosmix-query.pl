@@ -18,7 +18,7 @@ my $w = Weather::MOSMIX->new(
 
 my $f =
     $w->forecast(latitude => 50.11, longitude => 8.68 );
-my $out = format_forecast( $f );
+my $out = $w->format_forecast( $f );
 
 binmode STDOUT, ':encoding(UTF-8)';
 
@@ -30,7 +30,37 @@ for my $day ('today', 'tomorrow') {
         print $w->{timestamp}, "\n";
         print sprintf "%02d %s$Weather::MOSMIX::Weathercodes::as_emoji %s\n", $w->{timestamp}->hour, $w->{description}->{emoji}, $w->{description}->{text};
     };
-    
+
     # Maybe a one-line information per day, with samples/aggregates at
     # 03, 09, 15 and 21 ?
 };
+
+__END__
+
+--- current weather (3day forecast)
+    location      -> location2
+
+      W
+      mM
+
+    mon wed thu
+    m/M m/M m/M
+    ww  ww  ww
+
+--- 3day x4 forecast
+    location       -> location2
+
+    mon wed thu
+mor m/M m/M m/M
+    ww  ww  ww
+mid m/M m/M m/M
+    ww  ww  ww
+eve m/M m/M m/M
+    ww  ww  ww
+nig m/M m/M m/M
+    ww  ww  ww
+
+--- all locations
+    location  / W / mM ^ current weather (3day)
+    location2 / W / mM
+
