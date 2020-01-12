@@ -19,7 +19,7 @@ Reader for MOSMIX weather forecast files
 
 =cut
 
-# This should be MooX::Role::DBConnection
+# This should be(come) MooX::Role::DBConnection
 with 'Moo::Role::DBIConnection';
 
 our $TIMESTAMP = '%Y-%m-%dT%H:%M:%S';
@@ -30,6 +30,22 @@ has 'json' => (
 		JSON->new()
 	},
 );
+
+# Convert an array into an SQLite virtual table
+# This should move into its own module/role, maybe
+sub as_dbh( $table_name, $rows, $colnames=[keys %{ $rows->[0]}]) {
+    my $dbh = DBI->connect('dbi:SQLite:dbname=:memory:',undef,undef,{AutoCommit => 1, RaiseError => 1,PrintError => 0});
+    $dbh->sqlite_create_module(perl => "DBD::SQLite::VirtualTable::PerlData");
+
+    $colnames = join ",", @$colnames;
+    our $table_000;
+    local $table_000 = $rows;
+    my $tablevar = __PACKAGE__ . '::table_000';
+    my $sql = qq(CREATE VIRTUAL TABLE "$table_name" USING perl($colnames, arrayrefs="$tablevar"););
+    $dbh->do($sql);
+
+    return $dbh
+}
 
 sub forecast( $self, %options ) {
     my $cos_lat_sq = cos( $options{ latitude } ) ^ 2;
@@ -50,6 +66,10 @@ SQL
     $res->[0]
 };
 
+sub forecast_dbh( $self, %options ) {
+    my $res = $self->forecast;
+    return as_dbh( 'forecast', $res )
+}
 
 sub format_forecast_range_concise {
     my( $ts, $temp, $weathercode, $offset, $count ) = @_;
