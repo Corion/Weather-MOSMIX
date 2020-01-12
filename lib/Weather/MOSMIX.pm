@@ -79,7 +79,15 @@ sub format_forecast_range_concise {
     $time->tzoffset(2*3600); # at least until October ...
     # Do the min/max for the 4 6-hour windows
     # Find the "representative" weather code for each window
+    # This should be done in SQL instead of hacking Perl code for this
     my %count;
+    # with range as (
+    #     select * from perldata
+    #     where rownum() between ? and ?
+    # )
+    # select min(temp) as mintemp over ()
+    # , max(temp) as maxtemp over ()
+    # from range
     for my $i ($offset..$offset+$count-1) {
         my $c = $weathercode->{values}->[ $i ];
         if( length $c ) {
@@ -102,6 +110,19 @@ sub format_forecast_range_concise {
 sub format_forecast_day_concise {
     my( $ts, $temp, $weathercode, $offset, $count ) = @_;
 
+    # with range as (
+    #     select * from perldata
+    # )
+    # , minmax as (
+    #     select min(temp) as mintemp over (partition by offset / 6)
+    #     , max(temp) as maxtemp over (partition by offset / 6)
+    #     , weathercode
+    # select
+    #     lead(min,0) lead(max,0), lead(weathercode,0)
+    #     lead(min,1) lead(max,1), lead(weathercode,1)
+    #     lead(min,2) lead(max,2), lead(weathercode,2)
+    #     lead(min,3) lead(max,3), lead(weathercode,3)
+    # from range
     my @res;
     for (1..4) {
         push @res, format_forecast_range_concise( $ts, $temp, $weathercode, $offset, 6 );
