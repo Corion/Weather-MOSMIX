@@ -41,7 +41,7 @@ sub as_dbh( $table_name, $rows, $colnames=[keys %{ $rows->[0]}]) {
     our $table_000;
     local $table_000 = $rows;
     my $tablevar = __PACKAGE__ . '::table_000';
-    my $sql = qq(CREATE VIRTUAL TABLE "$table_name" USING perl($colnames, arrayrefs="$tablevar"););
+    my $sql = qq(CREATE VIRTUAL TABLE "$table_name" USING perl($colnames, hashrefs="$tablevar"););
     $dbh->do($sql);
 
     return $dbh
@@ -49,7 +49,6 @@ sub as_dbh( $table_name, $rows, $colnames=[keys %{ $rows->[0]}]) {
 
 sub forecast( $self, %options ) {
     my $cos_lat_sq = cos( $options{ latitude } ) ^ 2;
-
     my $res =
     $self->dbh->selectall_arrayref(<<'SQL', { Slice => {}}, $options{latitude}, $options{latitude}, $options{longitude},$options{longitude}, $cos_lat_sq);
         select *,
@@ -67,8 +66,34 @@ SQL
 };
 
 sub forecast_dbh( $self, %options ) {
-    my $res = $self->forecast;
-    return as_dbh( 'forecast', $res )
+    my $res = $self->forecast( %options );
+    # Convert from UTC to CET. This happens to work because my machines
+    # are located within CET ...
+    my $time = Time::Piece->strptime( $res->{issuetime}, '%Y-%m-%dT%H:%M:%SZ' );
+    $time = $time->_mktime( $time->epoch, 1 );
+    $time->tzoffset(2*3600); # at least until October ...
+
+    #for my $i ($offset..$offset+$count-1) {
+    #    my $c = $weathercode->{values}->[ $i ];
+    #    if( length $c ) {
+    #        my $v = sprintf '%02d', 0+$c;
+    #        push @{ $weather }, {
+    #            timestamp   => $time->new(),
+    #            description => mosmix_weathercode($v),
+    #        };
+    #        $time += 3600;
+
+    # zip ww and TTT to AoH
+    my @rows = map {
+        my $row = +{
+            $res->{forecasts}->[0]->{type} => $res->{forecasts}->[0]->{values}->[$_],
+            $res->{forecasts}->[1]->{type} => $res->{forecasts}->[1]->{values}->[$_],
+            timestamp => $time->new,
+        };
+        $time += 3600;
+        $row
+    } 0..$#{$res->{forecasts}->[0]->{values}};
+    return as_dbh( 'forecast', \@rows )
 }
 
 sub format_forecast_range_concise {
@@ -119,10 +144,10 @@ sub format_forecast_range_concise {
     };
 
     # Use the prevalent weather ...
-    my ($weathercode) = (sort { $count{$a} cmp $count{$a} } keys %count )[0];
+    my ($prevalent_weather) = (sort { $count{$a} cmp $count{$a} } keys %count )[0];
     push @{ $weather }, {
         timestamp   => $ts->new(),
-        description => mosmix_weathercode($weathercode),
+        description => mosmix_weathercode($prevalent_weather),
     };
 
     return \%forecast
@@ -193,6 +218,58 @@ sub format_forecast_day {
     };
 
     return \%forecast,
+};
+
+sub format_forecast_dbh {
+    my( $self, $dbh, $interval ) = @_;
+
+    my $sql = <<SQL;
+    with
+      ordered as (
+        select
+                 row_number() over (order by 1) as weather_partition
+               , $interval           as size
+               , *
+          from forecast
+    )
+    , partitioned as (
+        select
+                 round((weather_partition/size)-0.5) as part
+               , *
+          from ordered
+    )
+    , minmax as (
+        select
+                min(TTT) over (partition by part) as mintemp
+              , max(TTT) over (partition by part) as maxtemp
+              -- date
+              -- timestamp, TZ-adjusted
+              , *
+        from partitioned
+    )
+    select
+        *
+    from minmax
+    where part*size = weather_partition
+SQL
+
+    my $res = $dbh->selectall_arrayref($sql, { Slice => {} });
+
+    # fix up the data we have
+    # $time->tzoffset(2*3600); # at least until October ...
+    #for my $i ($offset..$offset+$count-1) {
+    #    my $c = $weathercode->{values}->[ $i ];
+    #    if( length $c ) {
+    #        my $v = sprintf '%02d', 0+$c;
+    #        push @{ $weather }, {
+    #            timestamp   => $time->new(),
+    #            description => mosmix_weathercode($v),
+    #        };
+    #        $time += 3600;
+    #    };
+    #};
+
+    return $res;
 };
 
 sub format_forecast {
