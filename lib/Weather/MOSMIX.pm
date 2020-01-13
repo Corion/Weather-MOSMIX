@@ -256,7 +256,7 @@ sub format_forecast_dbh {
         *
     from minmax
     where abs(part*size - weather_partition) < 0.001
-    order by timestamp
+       or weather_partition = 0
 SQL
 
     my $res = $dbh->selectall_arrayref($sql, { Slice => {} });
