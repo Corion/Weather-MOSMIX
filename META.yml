@@ -30,6 +30,7 @@ requires:
   Moo: '2'
   POSIX: '0'
   PerlIO::gzip: '0.2'
+  Text::Table: '0'
   Time::Piece: '0'
   URI: '0'
   XML::Twig: '0'
