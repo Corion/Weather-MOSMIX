@@ -224,8 +224,7 @@ sub format_forecast_day {
     return \%forecast,
 };
 
-sub format_forecast_dbh {
-    my( $self, $dbh, $interval, $offset=0 ) = @_;
+sub format_forecast_dbh( $self, $dbh, $interval, $offset=0 ) {
 # We need some offset for the first set, which will not contain the full
 # six (or whatever) hours
     my $sql = <<SQL;
