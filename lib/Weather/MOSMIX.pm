@@ -85,10 +85,14 @@ sub forecast_dbh( $self, %options ) {
 
     # zip ww and TTT to AoH
     my @rows = map {
+        my $ts = $time->new;
         my $row = +{
             $res->{forecasts}->[0]->{type} => $res->{forecasts}->[0]->{values}->[$_],
             $res->{forecasts}->[1]->{type} => $res->{forecasts}->[1]->{values}->[$_],
-            timestamp => $time->new,
+            timestamp => $ts->strftime($TIMESTAMP),
+            date      => $ts->strftime('%Y-%m-%d'),
+            hour      => $ts->strftime('%H'),
+            weekday   => $ts->strftime('%a'),
         };
         $time += 3600;
         $row
