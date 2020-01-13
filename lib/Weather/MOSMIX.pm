@@ -8,6 +8,7 @@ use DBI;
 use JSON;
 use DBD::SQLite 1.56; # some virtual table bugfixes
 use Weather::MOSMIX::Weathercodes 'mosmix_weathercode';
+use Storable 'dclone';
 
 our $VERSION = '0.01';
 
@@ -84,18 +85,21 @@ sub forecast_dbh( $self, %options ) {
     #        $time += 3600;
 
     # zip ww and TTT to AoH
+    my $hour_ofs;
     my @rows = map {
         my $ts = $time->new;
         $time += 3600;
 
-        +{
+        my $res = +{
             $res->{forecasts}->[0]->{type} => $res->{forecasts}->[0]->{values}->[$_],
             $res->{forecasts}->[1]->{type} => $res->{forecasts}->[1]->{values}->[$_],
             timestamp => $ts->strftime($TIMESTAMP),
             date      => $ts->strftime('%Y-%m-%d'),
             hour      => $ts->strftime('%H'),
+            hour_ofs  => $hour_ofs++,
             weekday   => $ts->strftime('%a'),
         };
+        length $res->{TTT} ? $res : ()
     } 0..$#{$res->{forecasts}->[0]->{values}};
     return as_dbh( 'forecast', \@rows )
 }
@@ -231,29 +235,41 @@ sub format_forecast_dbh( $self, $dbh, $interval, $offset=0 ) {
     with
       partitioned as (
         select
-                 round((hour+$offset)/$interval-0.5) as part
-               , (hour+$offset)/$interval as weather_partition
+                 round((hour_ofs*1.0)/$interval) as part
+               , (hour_ofs*1.0)/$interval as weather_partition
                , $interval    as size
                , *
           from forecast
     )
     , minmax as (
         select
-                min(TTT) over (partition by weather_partition) as mintemp
-              , max(TTT) over (partition by weather_partition) as maxtemp
+                max(TTT) over (partition by part) as maxtemp
+              , min(TTT) over (partition by part) as mintemp
+              , row_number() over (partition by part order by timestamp) as row
+              --, min(weather_partition) over (partition by part) as use_this
               -- , date
               -- , timestamp -- TZ-adjusted
               , *
         from partitioned
     )
     select
-        *
+          'active' as status
+        , *
     from minmax
-    where abs(part*size - weather_partition) < 0.001
-       or weather_partition = 0
+    where row = 1
+    order by timestamp
 SQL
 
     my $res = $dbh->selectall_arrayref($sql, { Slice => {} });
+
+    # Now, add dummy data for slots we don't have
+    # this would likely be parts of the day that have already passed
+    while( $res->[0]->{hour} > $offset+$interval) {
+        my $new = dclone( $res->[0]);
+        $new->{hour}-= $interval;
+        $new->{status} = 'past';
+        unshift @$res, $new;
+    };
 
     # fix up the data we have
     # $time->tzoffset(2*3600); # at least until October ...
