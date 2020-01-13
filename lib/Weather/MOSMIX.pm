@@ -225,14 +225,15 @@ sub format_forecast_day {
 };
 
 sub format_forecast_dbh {
-    my( $self, $dbh, $interval ) = @_;
-
+    my( $self, $dbh, $interval, $offset=0 ) = @_;
+# We need some offset for the first set, which will not contain the full
+# six (or whatever) hours
     my $sql = <<SQL;
     with
       ordered as (
         select
-                 row_number() over (order by 1) as weather_partition
-               , $interval           as size
+                 hour+$offset as weather_partition
+               , $interval    as size
                , *
           from forecast
     )
@@ -246,15 +247,16 @@ sub format_forecast_dbh {
         select
                 min(TTT) over (partition by part) as mintemp
               , max(TTT) over (partition by part) as maxtemp
-              -- date
-              -- timestamp, TZ-adjusted
+              -- , date
+              -- , timestamp -- TZ-adjusted
               , *
         from partitioned
     )
     select
         *
     from minmax
-    where part*size = weather_partition
+    where abs(part*size - weather_partition) < 0.001
+    order by timestamp
 SQL
 
     my $res = $dbh->selectall_arrayref($sql, { Slice => {} });
