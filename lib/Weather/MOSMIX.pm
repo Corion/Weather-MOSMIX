@@ -229,23 +229,18 @@ sub format_forecast_dbh( $self, $dbh, $interval, $offset=0 ) {
 # six (or whatever) hours
     my $sql = <<SQL;
     with
-      ordered as (
+      partitioned as (
         select
-                 hour+$offset as weather_partition
+                 round((hour+$offset)/$interval-0.5) as part
+               , (hour+$offset)/$interval as weather_partition
                , $interval    as size
                , *
           from forecast
     )
-    , partitioned as (
-        select
-                 round((weather_partition/size)-0.5) as part
-               , *
-          from ordered
-    )
     , minmax as (
         select
-                min(TTT) over (partition by part) as mintemp
-              , max(TTT) over (partition by part) as maxtemp
+                min(TTT) over (partition by weather_partition) as mintemp
+              , max(TTT) over (partition by weather_partition) as maxtemp
               -- , date
               -- , timestamp -- TZ-adjusted
               , *
