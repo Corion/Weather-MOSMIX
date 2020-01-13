@@ -235,7 +235,7 @@ sub format_forecast_dbh( $self, $dbh, $interval, $offset=0 ) {
     with
       partitioned as (
         select
-                 round((hour_ofs*1.0)/$interval) as part
+                 round((hour_ofs*1.0)/$interval -0.5) as part
                , (hour_ofs*1.0)/$interval as weather_partition
                , $interval    as size
                , *
