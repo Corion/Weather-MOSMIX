@@ -69,7 +69,7 @@ sub forecast_dbh( $self, %options ) {
     my $res = $self->forecast( %options );
     # Convert from UTC to CET. This happens to work because my machines
     # are located within CET ...
-    my $time = Time::Piece->strptime( $res->{issuetime}, '%Y-%m-%dT%H:%M:%SZ' );
+    my $time = Time::Piece->strptime( $res->{issuetime}, $TIMESTAMP );
     $time = $time->_mktime( $time->epoch, 1 );
     $time->tzoffset(2*3600); # at least until October ...
 
