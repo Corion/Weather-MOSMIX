@@ -93,12 +93,15 @@ sub forecast_dbh( $self, %options ) {
         my $res = +{
             $res->{forecasts}->[0]->{type} => $res->{forecasts}->[0]->{values}->[$_],
             $res->{forecasts}->[1]->{type} => $res->{forecasts}->[1]->{values}->[$_],
-            timestamp => $ts->strftime($TIMESTAMP),
-            date      => $ts->strftime('%Y-%m-%d'),
-            hour      => $ts->strftime('%H'),
-            hour_ofs  => $hour_ofs++,
-            weekday   => $ts->strftime('%a'),
+            timestamp                      => $ts->strftime($TIMESTAMP),
+            date                           => $ts->strftime('%Y-%m-%d'),
+            hour                           => $ts->strftime('%H'),
+            hour_ofs                       => $hour_ofs++,
+            weekday                        => $ts->strftime('%a'),
+            description                    => $res->{description},
         };
+        my $descr = mosmix_weathercode($res->{ww}, 'emoji');
+        $res->{emoji} = $descr;
         length $res->{TTT} ? $res : ()
     } 0..$#{$res->{forecasts}->[0]->{values}};
     return as_dbh( 'forecast', \@rows )
