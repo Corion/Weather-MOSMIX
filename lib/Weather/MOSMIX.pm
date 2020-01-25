@@ -9,6 +9,7 @@ use JSON;
 use DBD::SQLite 1.56; # some virtual table bugfixes
 use Weather::MOSMIX::Weathercodes 'mosmix_weathercode';
 use Storable 'dclone';
+use Time::Piece;
 use Encode 'encode', 'decode';
 
 our $VERSION = '0.01';
