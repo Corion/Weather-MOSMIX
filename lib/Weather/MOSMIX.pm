@@ -9,6 +9,7 @@ use JSON;
 use DBD::SQLite 1.56; # some virtual table bugfixes
 use Weather::MOSMIX::Weathercodes 'mosmix_weathercode';
 use Storable 'dclone';
+use Encode 'encode', 'decode';
 
 our $VERSION = '0.01';
 
@@ -101,7 +102,7 @@ sub forecast_dbh( $self, %options ) {
             description                    => $res->{description},
         };
         my $descr = mosmix_weathercode($res->{ww}, 'emoji');
-        $res->{emoji} = $descr;
+        $res->{emoji} = encode('UTF-8', $descr);
         length $res->{TTT} ? $res : ()
     } 0..$#{$res->{forecasts}->[0]->{values}};
     return as_dbh( 'forecast', \@rows )
@@ -273,6 +274,12 @@ SQL
         $new->{status} = 'past';
         unshift @$res, $new;
     };
+
+    for( @$res ) {
+        if( exists $_->{emoji}) {
+            $_->{emoji} = decode('UTF-8', $_->{emoji});
+        }
+    }
 
     # fix up the data we have
     # $time->tzoffset(2*3600); # at least until October ...
