@@ -39,7 +39,7 @@ our %weathercodes = (
 );
 
 sub mosmix_weathercode($code, $type = undef) {
-    $code = sprintf '%02d', $code;
+    $code = sprintf '%02d', $code || 0;
     if( $type ) {
         my $c = $weathercodes{$code}->{ $type };
         return $c ? $c . $as_emoji : $code;
