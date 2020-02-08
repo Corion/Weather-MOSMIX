@@ -64,6 +64,8 @@ my %module = (
         # For Weather::WeatherGov
         'URI'                => 0,
         'HTTP::Tiny'         => 0,
+        'IO::Socket::SSL'    => 1.42,
+        'Net::SSLeay'        => 1.49,
         'JSON'               => 0,
     },
     TEST_REQUIRES => {
