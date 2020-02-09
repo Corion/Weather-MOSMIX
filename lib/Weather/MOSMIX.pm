@@ -101,6 +101,7 @@ sub forecast_dbh( $self, %options ) {
             hour_ofs                       => $hour_ofs++,
             weekday                        => $ts->strftime('%a'),
             description                    => $res->{description},
+            issuetime                      => $res->{issuetime}
         };
         my $descr = mosmix_weathercode($res->{ww}, 'emoji');
         $res->{emoji} = encode('UTF-8', $descr);
