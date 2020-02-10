@@ -360,6 +360,38 @@ sub formatted_forecast( $self, %options ) {
     $self->format_forecast( $f )
 }
 
+=head2 C<< $mosmix->locations >>
+
+Lists all locations with their names and longitude/latitude. If a longitude
+/ latitude pair is passed in, the list is ordered by the distance from
+that position.
+
+=cut
+
+sub locations( $self, %options ) {
+    my $order_by = 'description asc';
+    if(     exists $options{ longitude }
+        and exists $options{ latitude } ) {
+        $order_by = 'distance asc';
+    } else {
+        $options{ latitude } = 0;
+    };
+    my $cos_lat_sq = cos( $options{ latitude } ) ^ 2;
+    my $res =
+    $self->dbh->selectall_arrayref(<<SQL, { Slice => {}}, $options{latitude}, $options{latitude}, $options{longitude},$options{longitude}, $cos_lat_sq);
+        select
+            description
+          , latitude
+          , longitude
+          ,   ((l.latitude - ?)*(l.latitude - ?))
+            + ((l.longitude - ?)*(l.longitude - ?)*?) as distance
+            from forecast_location l
+            order by $order_by
+SQL
+    $res
+};
+
+
 =head1 SEE ALSO
 
 German Weather Service
