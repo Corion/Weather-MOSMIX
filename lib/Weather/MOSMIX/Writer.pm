@@ -57,6 +57,13 @@ sub purge_expired_records( $self, $date = POSIX::strftime('%Y-%m-%d %H:%M:%SZ', 
 SQL
 }
 
+sub purge_outdated_expired_records( $self ) {
+	$self->dbh->do(<<'SQL');
+	    delete from forecast
+	        where expiry < (select max(expiry) from forecast)
+SQL
+}
+
 sub start( $self ) {
 	my $dbh = $self->dbh;
 	$dbh->do('PRAGMA synchronous = OFF');
