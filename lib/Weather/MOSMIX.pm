@@ -167,8 +167,7 @@ sub format_forecast_range_concise {
     return \%forecast
 }
 
-sub format_forecast_day_concise {
-    my( $ts, $temp, $weathercode, $offset, $count ) = @_;
+sub format_forecast_day_concise( $ts, $temp, $weathercode, $offset, $count ) {
 
     # with range as (
     #     select * from perldata
@@ -300,8 +299,7 @@ SQL
     return $res;
 };
 
-sub format_forecast {
-    my( $self, $f ) = @_;
+sub format_forecast( $self, $f ) {
     my $loc = $f->{description};
     (my $temp) = grep{ $_->{type} eq 'TTT' } @{ $f->{forecasts}};
     (my $weathercode) = grep{ $_->{type} eq 'ww' } @{ $f->{forecasts}};
