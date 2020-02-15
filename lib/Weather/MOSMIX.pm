@@ -16,7 +16,7 @@ our $VERSION = '0.01';
 
 =head1 NAME
 
-Reader for MOSMIX weather forecast files
+Weather::MOSMIX - Reader for MOSMIX weather forecast files
 
 =head1 SYNOPSIS
 
@@ -390,7 +390,6 @@ sub locations( $self, %options ) {
 SQL
     $res
 };
-
 
 =head1 SEE ALSO
 

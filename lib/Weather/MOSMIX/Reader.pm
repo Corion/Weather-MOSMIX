@@ -15,7 +15,42 @@ use PerlIO::gzip;
 use Weather::MOSMIX;
 use Weather::MOSMIX::Writer;
 
+=head1 NAME
+
+Weather::MOSMIX::Read - Read MOSMIX weather forecast data
+
+=head1 SYNOPSIS
+
+This reads and parses  the XML from the compressed C<.kmz> file and writes it
+to an SQLite database:
+
+    my $w = Weather::MOSMIX::Writer->new(
+        dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
+    );
+    my $r = Weather::MOSMIX::Reader->new(
+        writer => $w,
+    );
+
+    for my $file (@files) {
+        status("Importing $file\n");
+        $r->read_zip( $file );
+    };
+
+=cut
+
 our $VERSION = '0.01';
+
+=head1 METHODS
+
+=head2 C<< Weather::MOSMIX::Reader->new() >>
+
+=cut
+
+=head1 ACCESSORS
+
+=head2 C<< twig >>
+
+=cut
 
 has 'twig' => (
     is => 'lazy',
@@ -36,18 +71,36 @@ has 'twig' => (
     },
 );
 
+=head2 C<< expiry >>
+
+=cut
+
 # Ugly global attributes to store state while parsing:-/
 has 'expiry' => (
     is => 'rw',
 );
 
+=head2 C<< issuetime >>
+
+=cut
+
 has 'issuetime' => (
     is => 'rw',
 );
 
+=head2 C<< writer >>
+
+=cut
+
 has 'writer' => (
     is => 'ro',
 );
+
+=head1 METHODS
+
+=head2 C<< ->file_expiry >>
+
+=cut
 
 sub file_expiry( $self, $filename ) {
     if( $filename =~ m/MOSMIX_S_(20\d\d)(\d\d)(\d\d)(\d\d)_/) {
@@ -65,6 +118,15 @@ sub read_zip( $self, $filename, $expiry=$self->file_expiry($filename) ) {
     binmode $stream => ':gzip(none)';
     $self->parse_fh($stream, $expiry);
 }
+
+=head2 C<< ->parse_fh >>
+
+    $reader->parse_fh( $xml_fh, expiry => '2020-02-15T14:00:00Z );
+
+Parses the KML data streaming from the filehandle. The optional C<expiry>
+option can be used to pass an expiry date.
+
+=cut
 
 sub parse_fh( $self, $fh, $expiry=undef ) {
     $self->writer->start;

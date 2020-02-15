@@ -8,6 +8,26 @@ use DBI;
 require POSIX;
 use JSON;
 
+=head1 NAME
+
+Weather::MOSMIX::Writer - Write MOSMIX weather forecast data to a DBI handle
+
+=head1 SYNOPSIS
+
+    my $w = Weather::MOSMIX::Writer->new(
+        dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
+    );
+    my $r = Weather::MOSMIX::Reader->new(
+        writer => $w,
+    );
+
+    for my $file (@files) {
+        status("Importing $file\n");
+        $r->read_zip( $file );
+    };
+
+=cut
+
 our $VERSION = '0.01';
 
 # This should be MooX::Role::DBConnection
