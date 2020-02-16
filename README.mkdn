@@ -21,7 +21,7 @@ that position.
 1. Install the module
 2. Create a directory for the database
 
-        mkdir ~/weather
+        mkdir ~/weather ; cd ~/weather
 
 3. Create the database
 

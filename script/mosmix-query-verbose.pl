@@ -6,20 +6,33 @@ use Data::Dumper;
 use charnames ':full';
 use Weather::MOSMIX;
 use Time::Piece;
+use Getopt::Long;
 
 our $VERSION = '0.01';
 
+GetOptions(
+    'latitude=s'  => \my $latitude,
+    'longitude=s' => \my $longitude,
+    'dsn=s'       => \my $dsn,
+);
+
+$dsn ||= 'dbi:SQLite:dbname=mosmix-forecast.sqlite';
+
 my $w = Weather::MOSMIX->new(
-    dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
+    dbh => {
+        dsn => $dsn
+    },
 );
 
 # Read location from .locationrc
 # File::HomeDir
 # ~/.config/.locationrc
 # ~/.locationrc
+$latitude //= 50.11;
+$longitude //= 8.68;
 
 my $f =
-    $w->forecast(latitude => 50.11, longitude => 8.68 );
+    $w->forecast(latitude => $latitude, longitude => $longitude );
 my $out = $w->format_forecast( $f );
 
 binmode STDOUT, ':encoding(UTF-8)';

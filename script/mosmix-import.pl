@@ -12,11 +12,16 @@ use Getopt::Long;
 our $VERSION = '0.01';
 
 GetOptions(
-    'create' => \my $create,
-    'import' => \my $import,
-    'fetch'  => \my $fetch,
+    'create'  => \my $create,
+    'import'  => \my $import,
+    'fetch'   => \my $fetch,
+
+    'dsn=s'   => \my $dsn,
+
     'verbose' => \my $verbose,
 );
+
+$dsn ||= 'dbi:SQLite:dbname=mosmix-forecast.sqlite';
 
 sub status {
     if( $verbose ) {
@@ -41,12 +46,10 @@ my @files = @ARGV;
 
 my $w;
 if( $actions{ create }) {
-    $w ||= Weather::MOSMIX::Writer->new(
-        dbh => {
-            dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
-        }
+    $w ||= Weather::MOSMIX::Writer->new();
+    $w->create_db(
+        dsn => $dsn
     );
-    $w->create_db();
 }
 
 if( $actions{ fetch }) {
@@ -70,7 +73,7 @@ if( $actions{ fetch }) {
 if( $actions{ import }) {
     $w ||= Weather::MOSMIX::Writer->new(
         dbh => {
-            dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
+            dsn => $dsn,
         }
     );
     my $r = Weather::MOSMIX::Reader->new(

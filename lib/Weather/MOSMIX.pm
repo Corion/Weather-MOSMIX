@@ -402,7 +402,7 @@ Install the module
 
 Create a directory for the database
 
-    mkdir ~/weather
+    mkdir ~/weather ; cd ~/weather
 
 =item 3
 
