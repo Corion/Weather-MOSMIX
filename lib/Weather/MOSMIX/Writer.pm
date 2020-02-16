@@ -85,10 +85,12 @@ SQL
 }
 
 sub start( $self ) {
-	my $dbh = $self->dbh;
-	$dbh->do('PRAGMA synchronous = OFF');
-	$dbh->do('PRAGMA journal_mode = MEMORY');
-	$dbh->{AutoCommit} = 0;
+    my $dbh = $self->dbh;
+    local $dbh->{PrintError} = 0;
+    local $dbh->{RaiseError} = 0;
+    $dbh->do('PRAGMA synchronous = OFF');
+    $dbh->do('PRAGMA journal_mode = MEMORY');
+    $dbh->{AutoCommit} = 0;
 };
 
 sub insert( $self, $expiry, @records ) {
