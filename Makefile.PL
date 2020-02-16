@@ -58,7 +58,7 @@ my %module = (
         # For writing the stuff to a database
         'DBI'                => 0,
         'DBIx::RunSQL'       => 0,
-        'DBD::SQLite'        => 0,
+        'DBD::SQLite'        => 1.56,
         'File::ShareDir'     => 0, # for finding our SQL snippet
         'POSIX'              => 0,
         'Time::Piece'        => 0,

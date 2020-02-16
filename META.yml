@@ -22,7 +22,7 @@ no_index:
     - inc
 requires:
   Archive::Zip: '0'
-  DBD::SQLite: '0'
+  DBD::SQLite: '1.56'
   DBI: '0'
   DBIx::RunSQL: '0'
   File::ShareDir: '0'
