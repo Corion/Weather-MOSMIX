@@ -109,13 +109,44 @@ sub file_expiry( $self, $filename ) {
     };
 }
 
+=head2 C<< ->open_zip >>
+
+    my $fh = $reader->open_zip(
+        zip_name =>
+        contained_name =>
+
+Opens the first file from a C<.kmz> file and returns an unzipping filehandle
+so the data can be streamed in. If no C<contained_name> is given, the first
+file will be read.
+
+=cut
+
+sub open_zip( $self, %options ) {
+    my $reader = Archive::Zip->new( $options{ zip_name } );
+
+    my $stream;
+    if( my $fn = $options{ contained_name }) {
+        $stream = $reader->memberNamed( $fn )->fh;
+    } else {
+        my @members = $reader->members;
+        $members[0]->rewindData();
+        $stream = $members[0]->fh;
+    };
+    binmode $stream => ':gzip(none)';
+    return $stream;
+}
+
+=head2 C<< ->read_zip >>
+
+    $reader->read_zip( $kmzfile );
+
+Opens the C<.kmz> file and parses the KML data in the first contained file.
+
+=cut
+
 # This could be in its own module?! IO::ReadZipContent ?
 sub read_zip( $self, $filename, $expiry=$self->file_expiry($filename) ) {
-    my $reader = Archive::Zip->new( $filename );
-    my @members = $reader->members;
-    $members[0]->rewindData();
-    my $stream = $members[0]->fh;
-    binmode $stream => ':gzip(none)';
+    my $stream = $self->open_zip( zip_name => $filename );
     $self->parse_fh($stream, $expiry);
 }
 
