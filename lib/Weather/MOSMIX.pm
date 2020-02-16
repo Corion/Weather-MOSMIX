@@ -390,6 +390,41 @@ SQL
     $res
 };
 
+=head1 SETUP
+
+=over 4
+
+=item 1
+
+Install the module
+
+=item 2
+
+Create a directory for the database
+
+    mkdir ~/weather
+
+=item 3
+
+Create the database
+
+    mosmix-import.pl --create
+
+=item 3
+
+Set up a cron job to fetch the MOSMIX forecast
+
+    01 6,12,18,0 * * * cd /home/corion/weather; mosmix-import.pl
+    15 6,12,18,0 * * * cd /home/corion/weather; mosmix-purge.pl
+
+=item 4
+
+Query the current forecast
+
+    cd /home/corion/weather; mosmix-query.pl
+
+=back
+
 =head1 SEE ALSO
 
 German Weather Service
