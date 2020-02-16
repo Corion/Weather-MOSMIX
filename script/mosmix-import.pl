@@ -12,7 +12,9 @@ use Getopt::Long;
 our $VERSION = '0.01';
 
 GetOptions(
+    'create' => \my $create,
     'import' => \my $import,
+    'fetch'  => \my $fetch,
     'fetch'  => \my $fetch,
     'verbose' => \my $verbose,
 );
@@ -29,13 +31,24 @@ if( @ARGV) {
     $import = 1;
 };
 
-if( ! ($import || $fetch )) {
+if( ! ($create || $import || $fetch )) {
     $fetch = 1;
     $import = 1;
 };
+$actions{ create } = $create;
 $actions{ import } = $import;
 $actions{ fetch  } = $fetch;
 my @files = @ARGV;
+
+my $w;
+if( $actions{ create }) {
+    $w ||= Weather::MOSMIX::Writer->new(
+        dbh => {
+            dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
+        }
+    );
+    $w->create_db();
+}
 
 if( $actions{ fetch }) {
     my $base = 'https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_S/all_stations/kml/MOSMIX_S_LATEST_240.kmz';
@@ -56,7 +69,7 @@ if( $actions{ fetch }) {
 };
 
 if( $actions{ import }) {
-    my $w = Weather::MOSMIX::Writer->new(
+    $w ||= Weather::MOSMIX::Writer->new(
         dbh => {
             dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
         }
