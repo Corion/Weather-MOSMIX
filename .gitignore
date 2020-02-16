@@ -12,6 +12,7 @@ MYMETA.*
 frame-*.png
 *.pl
 db/
+svg/
 *.kmz
 *.kml
 *.pdf
