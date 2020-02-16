@@ -57,7 +57,9 @@ if( $actions{ fetch }) {
 
 if( $actions{ import }) {
     my $w = Weather::MOSMIX::Writer->new(
-        dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
+        dbh => {
+            dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
+        }
     );
     my $r = Weather::MOSMIX::Reader->new(
         writer => $w,

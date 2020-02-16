@@ -22,8 +22,7 @@ Weather::MOSMIX - Reader for MOSMIX weather forecast files
 
 =cut
 
-# This should be(come) MooX::Role::DBConnection
-with 'Moo::Role::DBIConnection';
+with 'MooX::Role::DBIConnection';
 
 our $TIMESTAMP = '%Y-%m-%dT%H:%M:%S';
 

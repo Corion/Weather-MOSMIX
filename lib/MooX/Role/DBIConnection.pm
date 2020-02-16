@@ -1,4 +1,4 @@
-package Moo::Role::DBIConnection;
+package MooX::Role::DBIConnection;
 use Moo::Role;
 use Filter::signatures;
 use feature 'signatures';
@@ -9,13 +9,13 @@ our $VERSION = '0.01';
 
 =head1 NAME
 
-Moo::Role::DBIConnection
+MooX::Role::DBIConnection - handy mixin for objects with a DB connection
 
 =head1 SYNOPSIS
 
     { package My::Example;
       use Moo 2;
-      with 'Moo::Role::DBIConnection';
+      with 'MooX::Role::DBIConnection';
     };
 
     # Connect using the parameters
@@ -33,33 +33,50 @@ Moo::Role::DBIConnection
         dbh => $dbh,
     );
 
+This module enhances your class constructor by allowing you to pass in either
+a premade C<dbh> or the parameters needed to create one.
+
+It will create the C<dbh> accessor
+
+=head1 NOTE
+
+This module will likely be spun out of the Weather::MOSMIX distribution
+
+
 =cut
 
 has 'dbh' => (
     is => 'lazy',
     default => \&_connect_db,
+    coerce => sub {
+        my $dbh = $_[0];
+        if( ref($dbh) eq 'HASH' ) {
+            $dbh = DBI->connect( @{$dbh}{qw{dsn user password options}});
+        }
+        $dbh
+    }
 );
 
-has 'dsn' => (
-    is => 'ro',
-);
-
-has 'user' => (
-    is => 'ro',
-);
-
-has 'password' => (
-    is => 'ro',
-);
-
-has 'options' => (
-    is => 'ro',
-);
-
-sub _connect_db( $self ) {
-    my $dbh = DBI->connect(
-        $self->dsn, $self->user, $self->password, $self->options
-    );
-}
+#has 'dsn' => (
+#    is => 'ro',
+#);
+#
+#has 'user' => (
+#    is => 'ro',
+#);
+#
+#has 'password' => (
+#    is => 'ro',
+#);
+#
+#has 'options' => (
+#    is => 'ro',
+#);
+#
+#sub _connect_db( $self ) {
+#    my $dbh = DBI->connect(
+#        $self->dsn, $self->user, $self->password, $self->options
+#    );
+#}
 
 1;
