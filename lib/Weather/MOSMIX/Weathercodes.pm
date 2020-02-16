@@ -92,4 +92,31 @@ L<https://www.dwd.de/DE/leistungen/opendata/help/schluessel_datenformate/kml/mos
 
 L<Tempestacons|https://github.com/zagortenay333/Tempestacons/>
 
+=head1 REPOSITORY
+
+The public repository of this module is
+L<https://github.com/Corion/weather-mosmix>.
+
+=head1 SUPPORT
+
+The public support forum of this module is L<https://perlmonks.org/>.
+
+=head1 BUG TRACKER
+
+Please report bugs in this module via the RT CPAN bug queue at
+L<https://rt.cpan.org/Public/Dist/Display.html?Name=Weather-MOSMIX>
+or via mail to L<www-Weather-MOSMIX@rt.cpan.org|mailto:Weather-MOSMIX@rt.cpan.org>.
+
+=head1 AUTHOR
+
+Max Maischein C<corion@cpan.org>
+
+=head1 COPYRIGHT (c)
+
+Copyright 2019-2020 by Max Maischein C<corion@cpan.org>.
+
+=head1 LICENSE
+
+This module is released under the same terms as Perl itself.
+
 =cut
