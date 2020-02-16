@@ -6,9 +6,15 @@
 
 # NAME
 
-Reader for MOSMIX weather forecast files
+Weather::MOSMIX - Reader for MOSMIX weather forecast files
 
 # SYNOPSIS
+
+## `$mosmix->locations`
+
+Lists all locations with their names and longitude/latitude. If a longitude
+/ latitude pair is passed in, the list is ordered by the distance from
+that position.
 
 # SEE ALSO
 
