@@ -410,14 +410,14 @@ Create the database
 
     mosmix-import.pl --create
 
-=item 3
+=item 4
 
 Set up a cron job to fetch the MOSMIX forecast
 
     01 6,12,18,0 * * * cd /home/corion/weather; mosmix-import.pl
     15 6,12,18,0 * * * cd /home/corion/weather; mosmix-purge.pl
 
-=item 4
+=item 5
 
 Query the current forecast
 

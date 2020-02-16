@@ -15,7 +15,6 @@ GetOptions(
     'create' => \my $create,
     'import' => \my $import,
     'fetch'  => \my $fetch,
-    'fetch'  => \my $fetch,
     'verbose' => \my $verbose,
 );
 

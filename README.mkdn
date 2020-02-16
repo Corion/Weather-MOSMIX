@@ -16,6 +16,26 @@ Lists all locations with their names and longitude/latitude. If a longitude
 / latitude pair is passed in, the list is ordered by the distance from
 that position.
 
+# SETUP
+
+1. Install the module
+2. Create a directory for the database
+
+        mkdir ~/weather
+
+3. Create the database
+
+        mosmix-import.pl --create
+
+4. Set up a cron job to fetch the MOSMIX forecast
+
+        01 6,12,18,0 * * * cd /home/corion/weather; mosmix-import.pl
+        15 6,12,18,0 * * * cd /home/corion/weather; mosmix-purge.pl
+
+5. Query the current forecast
+
+        cd /home/corion/weather; mosmix-query.pl
+
 # SEE ALSO
 
 German Weather Service
@@ -56,3 +76,30 @@ Cyprus forecast
 [https://undraw.co/search](https://undraw.co/search)
 
 [https://coreui.io/icons/](https://coreui.io/icons/)
+
+# REPOSITORY
+
+The public repository of this module is
+[https://github.com/Corion/weather-mosmix](https://github.com/Corion/weather-mosmix).
+
+# SUPPORT
+
+The public support forum of this module is [https://perlmonks.org/](https://perlmonks.org/).
+
+# BUG TRACKER
+
+Please report bugs in this module via the RT CPAN bug queue at
+[https://rt.cpan.org/Public/Dist/Display.html?Name=Weather-MOSMIX](https://rt.cpan.org/Public/Dist/Display.html?Name=Weather-MOSMIX)
+or via mail to [www-Weather-MOSMIX@rt.cpan.org](mailto:Weather-MOSMIX@rt.cpan.org).
+
+# AUTHOR
+
+Max Maischein `corion@cpan.org`
+
+# COPYRIGHT (c)
+
+Copyright 2019-2020 by Max Maischein `corion@cpan.org`.
+
+# LICENSE
+
+This module is released under the same terms as Perl itself.
