@@ -7,6 +7,8 @@ use charnames ':full';
 use Weather::MOSMIX;
 use Time::Piece;
 
+our $VERSION = '0.01';
+
 my $w = Weather::MOSMIX->new(
     dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
 );

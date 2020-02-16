@@ -2,7 +2,6 @@
 use strict;
 use warnings;
 use Weather::MOSMIX::Writer;
-
 use Getopt::Long;
 
 our $VERSION = '0.01';
