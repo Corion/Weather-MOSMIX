@@ -111,6 +111,29 @@ sub insert( $self, $expiry, @records ) {
 
 sub commit( $self ) {
 	$self->dbh->commit;
+=head2 C<< Weather::MOSMIX::Writer->create_db >>
+
+    $w->create_db(
+        dsn => 'dbi:SQLite:dbname=db/forecast.sqlite',
+    );
+
+Shorthand to create the database file. If no dbh is already set, this sets
+the active database handle.
+
+=cut
+
+sub create_db( $self, %options ) {
+    require DBIx::RunSQL;
+    require File::ShareDir;
+    my $dbh = DBIx::RunSQL->run(
+        sql => File::ShareDir::dist_file('Weather-MOSMIX', 'create.sql'),
+        %options,
+    );
+    if( ref $self ) {
+        $self->{dbh} = $dbh      # our dbh is generally read-only
+            unless $self->{dbh}; # we look directly so the lazy builder doesn't kick in
+    };
+    return $dbh
 }
 
 1;
