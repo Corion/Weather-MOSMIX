@@ -2,10 +2,11 @@
 package main;
 use strict;
 use Weather::MOSMIX;
+use Weather::MOSMIX::Weathercodes 'mosmix_weathercode';
 use Data::Dumper;
 use charnames ':full';
-use Weather::MOSMIX;
 use Time::Piece;
+use Text::Table;
 
 our $VERSION = '0.01';
 
@@ -19,23 +20,33 @@ my $w = Weather::MOSMIX->new(
 # ~/.locationrc
 
 my $f =
-    $w->forecast(latitude => 50.11, longitude => 8.68 );
-my $out = $w->format_forecast( $f );
+    $w->forecast_dbh(latitude => 50.11, longitude => 8.68 );
+my $out = $w->format_forecast_dbh( $f, 6 );
+
+my @output;
+
+# print the header
+push @output, [map { '  ' . $out->[ $_ * 4 ]->{weekday} } 0..2];
+
+for my $row (0..3) {
+    #print $out->[$row]->{status}, " ";
+    my $outrow = [];
+    for my $col (0..2) {
+        my $elt = $out->[ $row + $col*4 ];
+        if( $elt->{status} eq 'active' ) {
+            push @$outrow, sprintf "%2.0f/%2.0f\x{1F321}$Weather::MOSMIX::Weathercodes::as_emoji %s", $elt->{mintemp}-273.15, $elt->{maxtemp}-273.15, $elt->{emoji}
+        } else {
+            push @$outrow, " -/- ";
+        }
+    };
+    push @output, $outrow;
+}
 
 binmode STDOUT, ':encoding(UTF-8)';
-
-for my $day ('today', 'tomorrow') {
-    my $issue = substr $out->{issuetime},0,10;
-    my $date = $out->{weather}->{$day}->{date}->strftime('%Y-%m-%d');
-    print "$out->{location} (\x{1F321}$Weather::MOSMIX::Weathercodes::as_emoji $out->{weather}->{$day}->{min}/$out->{weather}->{$day}->{max}) ($date)\n";
-    for my $w (@{ $out->{weather}->{$day}->{weather}}) {
-        print $w->{timestamp}, "\n";
-        print sprintf "%02d %s$Weather::MOSMIX::Weathercodes::as_emoji %s\n", $w->{timestamp}->hour, $w->{description}->{emoji}, $w->{description}->{text};
-    };
-
-    # Maybe a one-line information per day, with samples/aggregates at
-    # 03, 09, 15 and 21 ?
-};
+my $t = Text::Table->new( @{ shift @output } );
+$t->load( @output );
+print $out->[0]->{description},"\n";
+print $t;
 
 __END__
 
