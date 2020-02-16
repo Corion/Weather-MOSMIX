@@ -25,6 +25,7 @@ Makefile$
 ^frame-\d+.png
 ^demo/
 ^db/
+^.*\.sqlite$
 ^.*\.kmz$
 ^.*\.kml$
 ^.*\.pdf$

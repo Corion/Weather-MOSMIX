@@ -12,6 +12,7 @@ MYMETA.*
 frame-*.png
 *.pl
 db/
+*.sqlite
 svg/
 *.kmz
 *.kml

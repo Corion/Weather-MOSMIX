@@ -17,7 +17,7 @@ README.mkdn
 script/dump-locations.pl
 script/mosmix-import.pl
 script/mosmix-purge.pl
-script/mosmix-query-dbh.pl
+script/mosmix-query-verbose.pl
 script/mosmix-query.pl
 script/weathergov-query.pl
 sql/create.sql
