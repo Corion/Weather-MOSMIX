@@ -1,7 +1,4 @@
 .gitignore
-bin/mosmix-import.pl
-bin/mosmix-query.pl
-bin/weathergov-query.pl
 Changes
 lib/Moo/Role/DBIConnection.pm
 lib/Weather/MOSMIX.pm
@@ -17,9 +14,16 @@ META.json
 META.yml
 README
 README.mkdn
+script/dump-locations.pl
+script/mosmix-import.pl
+script/mosmix-purge.pl
+script/mosmix-query-dbh.pl
+script/mosmix-query.pl
+script/weathergov-query.pl
 sql/create.sql
 t/00-load.t
 t/01-expiry.t
+t/02-create.t
 xt/99-changes.t
 xt/99-compile.t
 xt/99-manifest.t

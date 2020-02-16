@@ -13,5 +13,6 @@ frame-*.png
 *.pl
 db/
 *.kmz
+*.kml
 *.pdf
 *.URL

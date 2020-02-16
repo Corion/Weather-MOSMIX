@@ -26,5 +26,7 @@ Makefile$
 ^demo/
 ^db/
 ^.*\.kmz$
+^.*\.kml$
 ^.*\.pdf$
 ^.*\.URL$
+^svg/.*$
