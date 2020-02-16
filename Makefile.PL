@@ -2,6 +2,7 @@
 
 use strict;
 use ExtUtils::MakeMaker qw(WriteMakefile);
+use File::ShareDir::Install;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
 
@@ -40,7 +41,8 @@ my %module = (
 
     PL_FILES            => {},
     BUILD_REQUIRES => {
-        'ExtUtils::MakeMaker' => '5.52_01',
+        'ExtUtils::MakeMaker'     => '5.52_01',
+        'File::ShareDir::Install' => 0,
     },
 
     PREREQ_PM => {
@@ -57,6 +59,7 @@ my %module = (
         'DBI'                => 0,
         'DBIx::RunSQL'       => 0,
         'DBD::SQLite'        => 0,
+        'File::ShareDir'     => 0, # for finding our SQL snippet
         'POSIX'              => 0,
         'Time::Piece'        => 0,
         'Text::Table'        => 0,
@@ -68,6 +71,9 @@ my %module = (
         'Net::SSLeay'        => 1.49,
         'JSON'               => 0,
     },
+    'EXE_FILES' => [
+        glob( 'script/*.pl' ),
+    ],
     TEST_REQUIRES => {
         'Test::More'   => 0,
         'Data::Dumper' => 0,
@@ -87,6 +93,7 @@ sub get_module_info { %module }
 
 if( ! caller ) {
     # I should maybe use something like Shipwright...
+	install_share dist => 'sql';
     regen_README($main_file);
     regen_EXAMPLES();
     WriteMakefile1(get_module_info);
@@ -241,3 +248,6 @@ sub update_file {
         };
     };
 }
+
+package MY;
+use File::ShareDir::Install qw(postamble);

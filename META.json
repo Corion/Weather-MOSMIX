@@ -1,5 +1,5 @@
 {
-   "abstract" : "unknown",
+   "abstract" : "Reader for MOSMIX weather forecast files",
    "author" : [
       "Max Maischein <corion@cpan.org>"
    ],
@@ -22,7 +22,8 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "ExtUtils::MakeMaker" : "5.52_01"
+            "ExtUtils::MakeMaker" : "5.52_01",
+            "File::ShareDir::Install" : "0"
          }
       },
       "configure" : {
@@ -36,10 +37,13 @@
             "DBD::SQLite" : "0",
             "DBI" : "0",
             "DBIx::RunSQL" : "0",
+            "File::ShareDir" : "0",
             "Filter::signatures" : "0.09",
             "HTTP::Tiny" : "0",
+            "IO::Socket::SSL" : "1.42",
             "JSON" : "0",
             "Moo" : "2",
+            "Net::SSLeay" : "1.49",
             "POSIX" : "0",
             "PerlIO::gzip" : "0.2",
             "Text::Table" : "0",
