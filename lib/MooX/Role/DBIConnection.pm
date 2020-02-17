@@ -46,8 +46,9 @@ This module will likely be spun out of the Weather::MOSMIX distribution
 =cut
 
 has 'dbh' => (
-    is => 'lazy',
-    default => \&_connect_db,
+    is => 'ro',
+    #is => 'lazy',
+    #default => \&_connect_db,
     coerce => sub {
         my $dbh = $_[0];
         if( ref($dbh) eq 'HASH' ) {
