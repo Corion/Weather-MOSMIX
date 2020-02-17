@@ -4,11 +4,11 @@ author:
   - 'Max Maischein <corion@cpan.org>'
 build_requires:
   Data::Dumper: '0'
-  ExtUtils::MakeMaker: 5.52_01
-  File::ShareDir::Install: '0'
+  ExtUtils::MakeMaker: '0'
   Test::More: '0'
 configure_requires:
-  ExtUtils::MakeMaker: '0'
+  ExtUtils::MakeMaker: 5.52_01
+  File::ShareDir::Install: '0'
 dynamic_config: 0
 generated_by: 'ExtUtils::MakeMaker version 7.34, CPAN::Meta::Converter version 2.150010'
 license: perl
