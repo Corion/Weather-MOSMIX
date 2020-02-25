@@ -29,6 +29,7 @@ our %weathercodes = (
     '49' => { emoji => "\N{FOG}",                        svg => 'fog.svg' },
     '61' => { emoji => "\N{CLOUD WITH RAIN}",            svg => 'rain.svg', text => 'slight rain, not freezing, continuous' },
     '63' => { emoji => "\N{CLOUD WITH RAIN}",            svg => 'rain.svg' },
+    '68' => { emoji => "\N{CLOUD WITH SNOW}",            svg => 'snow.svg', text => 'slight rain and snow' },
     '80' => { emoji => "\N{CLOUD WITH RAIN}",            svg => 'day-light-rain.svg',
               text  => 'light rain'    }, # light rain
     '81' => { emoji => "\N{RAIN}",                       svg => 'day-rain.svg'       }, # medium rain
