@@ -263,7 +263,6 @@ sub format_forecast_dbh( $self, $dbh, $interval, $offset=0 ) {
     where row = 1
     order by timestamp
 SQL
-
     my $res = $dbh->selectall_arrayref($sql, { Slice => {} });
 
     # Now, add dummy data for slots we don't have
