@@ -35,10 +35,17 @@ our %weathercodes = (
     '81' => { emoji => "\N{RAIN}",                       svg => 'day-rain.svg'       }, # medium rain
     '82' => { emoji => "\N{RAIN}",                       svg => 'day-showers.svg'    }, # strong rain
     '83' => { emoji => "\N{CLOUD WITH SNOW}",            svg => 'snow.svg', text => 'showers of rain and snow mixed, slight' },
-    '95' => { emoji => "\N{RAIN}",                       svg => 'thundershowers.svg',
+    '95' => { emoji => "\N{CLOUD WITH LIGHNTNING}",      svg => 'thundershowers.svg',
               text  => 'slight or moderate thunderstorm with rain or snow'
             },
 );
+
+# alternatives
+# 🌣 U1f323 \N{WHITE SUN}
+# 🌤 U1f324 \N{WHITE SUN WITH SMALL CLOUD}
+# 🌥 U1f325 \N{WHITE SUN BEHIND CLOUD}
+# 🌦 U1f326 \N{WHITE SUN BEHIND CLOUD WITH RAIN}
+# 🌪 U1f32a \N{CLOUD WITH TORNADO}
 
 sub mosmix_weathercode($code, $type = undef) {
     $code = sprintf '%02d', $code || 0;
