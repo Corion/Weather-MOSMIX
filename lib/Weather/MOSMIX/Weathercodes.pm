@@ -35,7 +35,7 @@ our %weathercodes = (
     '81' => { emoji => "\N{RAIN}",                       svg => 'day-rain.svg'       }, # medium rain
     '82' => { emoji => "\N{RAIN}",                       svg => 'day-showers.svg'    }, # strong rain
     '83' => { emoji => "\N{CLOUD WITH SNOW}",            svg => 'snow.svg', text => 'showers of rain and snow mixed, slight' },
-    '95' => { emoji => "\N{CLOUD WITH LIGHNTNING}",      svg => 'thundershowers.svg',
+    '95' => { emoji => "\N{CLOUD WITH LIGHTNING}",       svg => 'thundershowers.svg',
               text  => 'slight or moderate thunderstorm with rain or snow'
             },
 );
