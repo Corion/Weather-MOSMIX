@@ -30,7 +30,7 @@ Weather::MOSMIX::Writer - Write MOSMIX weather forecast data to a DBI handle
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 # This should be MooX::Role::DBConnection
 with 'MooX::Role::DBIConnection';
