@@ -134,8 +134,8 @@ sub create_db( $self, %options ) {
         %options,
     );
     if( ref $self ) {
-        $self->{dbh} = $dbh      # our dbh is generally read-only
-            unless $self->{dbh}; # we look directly so the lazy builder doesn't kick in
+        $self->{_dbh} = $dbh      # our dbh is generally read-only
+            unless $self->{_dbh}; # we look directly so the lazy builder doesn't kick in
     };
     return $dbh
 }
