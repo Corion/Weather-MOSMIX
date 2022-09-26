@@ -1,3 +1,7 @@
+0.03 2022-09-26
+    * remove downloaded files automatically
+      presented by "I disabled the /tmp cleanup cronjob"
+
 0.02 2020-02-17
     * Module::ShareDir::Install is a configure-time prerequisite
 
